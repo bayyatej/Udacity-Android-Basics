@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.text.NumberFormat;
 
 /**
@@ -26,8 +28,9 @@ public class MainActivity extends AppCompatActivity
 	 */
 	public void submitOrder(View view)
 	{
-		display(quantity);
-		displayPrice(quantity * 5);
+		int price = quantity * 5;
+		String priceMessage = "Amount Due: " + NumberFormat.getCurrencyInstance().format(price);
+		displayMessage(priceMessage);
 	}
 
 	/**
@@ -67,5 +70,15 @@ public class MainActivity extends AppCompatActivity
 	{
 		TextView priceTextView = findViewById(R.id.price_text_view);
 		priceTextView.setText(NumberFormat.getCurrencyInstance().format(number));
+	}
+
+	/**
+	 * This method displays the given message
+	 */
+	private void displayMessage(String message)
+	{
+		message += "\nThank You!";
+		TextView priceTextView = findViewById(R.id.price_text_view);
+		priceTextView.setText(message);
 	}
 }

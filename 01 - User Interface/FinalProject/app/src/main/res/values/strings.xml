@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Final Project</string>
+    <string name="content_description">Blue Owl Coffee Co. logo</string>
+    <string name="shop_name">Blue Owl Coffee Co.</string>
+    <string name="description">
+        Blue Owl Coffee is home to the best hot chocolate you will EVER taste. Just Don\'t let your
+        barista con you into ordering the drinking chocolate!
+    </string>
+    <string name="hours">Monday - Saturday:\n\t 7am - 10pm\nSunday:\n\t 8am-5pm</string>
+
+</resources>

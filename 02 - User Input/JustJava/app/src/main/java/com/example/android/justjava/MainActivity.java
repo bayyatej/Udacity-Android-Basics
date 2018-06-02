@@ -1,7 +1,10 @@
 package com.example.android.justjava;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -84,8 +87,17 @@ public class MainActivity extends AppCompatActivity
 	private void displayMessage(String name, boolean whip, boolean chocolate)
 	{
 		String message = createOrderSummary(name, calculatePrice(), whip, chocolate);
-		TextView orderTextView = findViewById(R.id.order_summary_text_view);
-		orderTextView.setText(message);
+		Intent mailIntent = new Intent(Intent.ACTION_VIEW);
+
+		mailIntent.setAction(Intent.ACTION_SENDTO);
+		mailIntent.putExtra(Intent.EXTRA_SUBJECT, ("Just Java Order for " + name));
+		mailIntent.putExtra(Intent.EXTRA_TEXT, message);
+		mailIntent.setData(Uri.parse("mailto:"));
+		
+		if (mailIntent.resolveActivity(getPackageManager()) != null)
+		{
+			startActivity(mailIntent);
+		}
 	}
 
 	/**

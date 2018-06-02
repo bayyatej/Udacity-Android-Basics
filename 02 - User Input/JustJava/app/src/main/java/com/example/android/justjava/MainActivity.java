@@ -36,7 +36,10 @@ public class MainActivity extends AppCompatActivity
 	{
 		CheckBox whipBox = findViewById(R.id.whipped_cream_box);
 		boolean addWhip = whipBox.isChecked();
-		displayMessage(addWhip);
+		CheckBox chocolateBox = findViewById(R.id.chocolate_box);
+		boolean addChocolate = chocolateBox.isChecked();
+
+		displayMessage(addWhip, addChocolate);
 	}
 
 	/**
@@ -72,9 +75,9 @@ public class MainActivity extends AppCompatActivity
 	/**
 	 * This method displays the given message
 	 */
-	private void displayMessage(boolean whip)
+	private void displayMessage(boolean whip, boolean chocolate)
 	{
-		String message = createOrderSummary(calculatePrice(), whip);
+		String message = createOrderSummary(calculatePrice(), whip, chocolate);
 		TextView orderTextView = findViewById(R.id.order_summary_text_view);
 		orderTextView.setText(message);
 	}
@@ -82,15 +85,20 @@ public class MainActivity extends AppCompatActivity
 	/**
 	 * Returns order summary
 	 */
-	private String createOrderSummary(int price, boolean whip)
+	private String createOrderSummary(int price, boolean whip, boolean chocolate)
 	{
 		String priceString = NumberFormat.getCurrencyInstance().format(price);
 		String whipString = "Whip";
 		if (!whip)
 		{
-			whipString = "No" + whipString;
+			whipString = "No " + whipString;
 		}
-		return ("Name: Steve the Fiend \n" + whipString + " \nQuantity: " + quantity +
-				" \nTotal: " + priceString + " \nThank You!");
+		String chocolateString = "Chocolate";
+		if (!chocolate)
+		{
+			chocolateString = "No " + chocolateString;
+		}
+		return ("Name: Steve the Fiend \n" + whipString + "\n" + chocolateString + " \nQuantity: "
+				+ quantity + " \nTotal: " + priceString + " \nThank You!");
 	}
 }

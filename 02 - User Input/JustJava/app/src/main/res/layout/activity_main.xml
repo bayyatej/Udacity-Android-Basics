@@ -5,9 +5,20 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="8dp">
+
+        <!--Name-->
+        <EditText
+            android:id="@+id/name_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
+            android:hint="@string/name_hint"
+            android:inputType="textCapWords" />
+
 
         <!--Toppings Views-->
         <TextView
@@ -22,7 +33,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:paddingEnd="0dp"
             android:paddingLeft="24dp"
+            android:paddingRight="0dp"
             android:paddingStart="24dp"
             android:text="@string/whipped_cream"
             android:textSize="16sp" />
@@ -32,7 +45,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:paddingEnd="0dp"
             android:paddingLeft="24dp"
+            android:paddingRight="0dp"
             android:paddingStart="24dp"
             android:text="@string/chocolate"
             android:textSize="16sp" />

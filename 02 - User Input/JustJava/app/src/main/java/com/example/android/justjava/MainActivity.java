@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -34,12 +35,14 @@ public class MainActivity extends AppCompatActivity
 	 */
 	public void submitOrder(View view)
 	{
+		EditText nameEdit = findViewById(R.id.name_edit_text);
+		String name = nameEdit.getText().toString();
 		CheckBox whipBox = findViewById(R.id.whipped_cream_box);
 		boolean addWhip = whipBox.isChecked();
 		CheckBox chocolateBox = findViewById(R.id.chocolate_box);
 		boolean addChocolate = chocolateBox.isChecked();
 
-		displayMessage(addWhip, addChocolate);
+		displayMessage(name, addWhip, addChocolate);
 	}
 
 	/**
@@ -47,8 +50,11 @@ public class MainActivity extends AppCompatActivity
 	 */
 	public void increment(View view)
 	{
-		quantity++;
-		displayQuantity(quantity);
+		if (quantity <= 99)
+		{
+			quantity++;
+			displayQuantity(quantity);
+		}
 	}
 
 	/**
@@ -59,8 +65,8 @@ public class MainActivity extends AppCompatActivity
 		if (quantity > 0)
 		{
 			quantity--;
+			displayQuantity(quantity);
 		}
-		displayQuantity(quantity);
 	}
 
 	/**
@@ -75,9 +81,9 @@ public class MainActivity extends AppCompatActivity
 	/**
 	 * This method displays the given message
 	 */
-	private void displayMessage(boolean whip, boolean chocolate)
+	private void displayMessage(String name, boolean whip, boolean chocolate)
 	{
-		String message = createOrderSummary(calculatePrice(), whip, chocolate);
+		String message = createOrderSummary(name, calculatePrice(), whip, chocolate);
 		TextView orderTextView = findViewById(R.id.order_summary_text_view);
 		orderTextView.setText(message);
 	}
@@ -85,20 +91,28 @@ public class MainActivity extends AppCompatActivity
 	/**
 	 * Returns order summary
 	 */
-	private String createOrderSummary(int price, boolean whip, boolean chocolate)
+	private String createOrderSummary(String name, int price, boolean whip, boolean chocolate)
 	{
-		String priceString = NumberFormat.getCurrencyInstance().format(price);
+
 		String whipString = "Whip";
 		if (!whip)
 		{
 			whipString = "No " + whipString;
+		} else
+		{
+			price += 1 * quantity;
 		}
 		String chocolateString = "Chocolate";
 		if (!chocolate)
 		{
 			chocolateString = "No " + chocolateString;
+		} else
+		{
+			price += 2 * quantity;
 		}
-		return ("Name: Steve the Fiend \n" + whipString + "\n" + chocolateString + " \nQuantity: "
+		String priceString = NumberFormat.getCurrencyInstance().format(price);
+
+		return ("Name: " + name + "\n" + whipString + "\n" + chocolateString + " \nQuantity: "
 				+ quantity + " \nTotal: " + priceString + " \nThank You!");
 	}
 }

@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Just Java</string>
+    <string name="toppings_label">Toppings</string>
+    <string name="whipped_cream">Whipped Cream</string>
     <string name="quantity_label">Quantity</string>
     <string name="initial_quantity">0</string>
     <string name="order_label">Order</string>

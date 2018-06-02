@@ -3,6 +3,7 @@ package com.example.android.justjava;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -33,10 +34,9 @@ public class MainActivity extends AppCompatActivity
 	 */
 	public void submitOrder(View view)
 	{
-		int price = calculatePrice();
-		String priceMessage = "Amount Due: " + NumberFormat.getCurrencyInstance().format(price);
-		displayMessage(priceMessage);
-
+		CheckBox whipBox = findViewById(R.id.whipped_cream_box);
+		boolean addWhip = whipBox.isChecked();
+		displayMessage(addWhip);
 	}
 
 	/**
@@ -72,9 +72,9 @@ public class MainActivity extends AppCompatActivity
 	/**
 	 * This method displays the given message
 	 */
-	private void displayMessage(String message)
+	private void displayMessage(boolean whip)
 	{
-		message = createOrderSummary(calculatePrice());
+		String message = createOrderSummary(calculatePrice(), whip);
 		TextView orderTextView = findViewById(R.id.order_summary_text_view);
 		orderTextView.setText(message);
 	}
@@ -82,10 +82,15 @@ public class MainActivity extends AppCompatActivity
 	/**
 	 * Returns order summary
 	 */
-	private String createOrderSummary(int price)
+	private String createOrderSummary(int price, boolean whip)
 	{
 		String priceString = NumberFormat.getCurrencyInstance().format(price);
-		return ("Name: Steve the Fiend \nQuantity: " + quantity + " \nTotal: " + priceString +
-				" \nThank You!");
+		String whipString = "Whip";
+		if (!whip)
+		{
+			whipString = "No" + whipString;
+		}
+		return ("Name: Steve the Fiend \n" + whipString + " \nQuantity: " + quantity +
+				" \nTotal: " + priceString + " \nThank You!");
 	}
 }

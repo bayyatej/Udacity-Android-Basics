@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">FieldCounter</string>
+    <string name="six_points">Six Points</string>
+    <string name="three_points">Three Points</string>
+    <string name="two_points">Two Points</string>
+    <string name="one_point">One Point</string>
+</resources>

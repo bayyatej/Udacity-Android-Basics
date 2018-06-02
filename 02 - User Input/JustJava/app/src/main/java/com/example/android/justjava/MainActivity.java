@@ -23,14 +23,20 @@ public class MainActivity extends AppCompatActivity
 		setContentView(R.layout.activity_main);
 	}
 
+	private int calculatePrice()
+	{
+		return quantity * 5;
+	}
+
 	/**
 	 * This method is called when the order button is clicked.
 	 */
 	public void submitOrder(View view)
 	{
-		int price = quantity * 5;
+		int price = calculatePrice();
 		String priceMessage = "Amount Due: " + NumberFormat.getCurrencyInstance().format(price);
 		displayMessage(priceMessage);
+
 	}
 
 	/**
@@ -39,7 +45,7 @@ public class MainActivity extends AppCompatActivity
 	public void increment(View view)
 	{
 		quantity++;
-		display(quantity);
+		displayQuantity(quantity);
 	}
 
 	/**
@@ -51,25 +57,16 @@ public class MainActivity extends AppCompatActivity
 		{
 			quantity--;
 		}
-		display(quantity);
+		displayQuantity(quantity);
 	}
 
 	/**
 	 * This method displays the given quantity value on the screen.
 	 */
-	private void display(int number)
+	private void displayQuantity(int number)
 	{
 		TextView quantityTextView = findViewById(R.id.quantity_text_view);
 		quantityTextView.setText("" + number);
-	}
-
-	/**
-	 * This method displays the given price on the screen.
-	 */
-	private void displayPrice(int number)
-	{
-		TextView priceTextView = findViewById(R.id.price_text_view);
-		priceTextView.setText(NumberFormat.getCurrencyInstance().format(number));
 	}
 
 	/**
@@ -77,8 +74,18 @@ public class MainActivity extends AppCompatActivity
 	 */
 	private void displayMessage(String message)
 	{
-		message += "\nThank You!";
-		TextView priceTextView = findViewById(R.id.price_text_view);
-		priceTextView.setText(message);
+		message = createOrderSummary(calculatePrice());
+		TextView orderTextView = findViewById(R.id.order_summary_text_view);
+		orderTextView.setText(message);
+	}
+
+	/**
+	 * Returns order summary
+	 */
+	private String createOrderSummary(int price)
+	{
+		String priceString = NumberFormat.getCurrencyInstance().format(price);
+		return ("Name: Steve the Fiend \nQuantity: " + quantity + " \nTotal: " + priceString +
+				" \nThank You!");
 	}
 }

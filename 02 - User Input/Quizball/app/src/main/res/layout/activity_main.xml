@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!--Score-->
+        <TextView
+            style="@style/ScoreStyle"
+            android:text="@string/score"
+            android:textSize="32sp" />
+
+        <TextView
+            android:id="@+id/score"
+            style="@style/ScoreStyle"
+            android:text="@string/defaultScore"
+            android:textSize="40sp" />
+
+        <!--Question 1-->
+        <TextView
+            android:id="@+id/question_1_text_view"
+            style="@style/QuestionStyle"
+            android:text="@string/question_1" />
+
+        <EditText
+            android:id="@+id/edit_text_question_1"
+            style="@style/AnswerStyle"
+            android:hint="@string/answer_hint"
+            android:inputType="textAutoCorrect" />
+
+        <!--Question 2-->
+        <TextView
+            android:id="@+id/question_2_text_view"
+            style="@style/QuestionStyle"
+            android:text="@string/question_2" />
+
+        <CheckBox
+            android:id="@+id/dabo"
+            style="@style/AnswerStyle"
+            android:paddingLeft="8dp"
+            android:text="@string/dabo_swinney" />
+
+        <CheckBox
+            android:id="@+id/nick"
+            style="@style/AnswerStyle"
+            android:paddingLeft="8dp"
+            android:text="@string/nick_saban" />
+
+        <CheckBox
+            android:id="@+id/urban"
+            style="@style/AnswerStyle"
+            android:paddingLeft="8dp"
+            android:text="@string/urban_meyer" />
+
+        <CheckBox
+            android:id="@+id/jim"
+            style="@style/AnswerStyle"
+            android:layout_marginBottom="16dp"
+            android:paddingLeft="8dp"
+            android:text="@string/jim_harbaugh" />
+
+        <!--Question 3-->
+        <TextView
+            android:id="@+id/question_3_text_view"
+            style="@style/QuestionStyle"
+            android:text="@string/question_3" />
+
+        <RadioGroup
+            android:id="@+id/question_3_radio_group"
+            style="@style/AnswerStyle">
+
+            <RadioButton
+                android:id="@+id/uab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/uab" />
+
+            <RadioButton
+                android:id="@+id/ucf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ucf" />
+
+            <RadioButton
+                android:id="@+id/fau"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/fau" />
+
+            <RadioButton
+                android:id="@+id/idaho"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="@string/idaho" />
+        </RadioGroup>
+
+        <!--Question 4-->
+        <TextView
+            android:id="@+id/question_4_text_view"
+            style="@style/QuestionStyle"
+            android:text="@string/question_4" />
+
+        <EditText
+            android:id="@+id/edit_text_question_4"
+            style="@style/AnswerStyle"
+            android:layout_marginBottom="16dp"
+            android:hint="@string/answer_hint"
+            android:inputType="textAutoCorrect" />
+
+        <!--Submit-->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:background="@color/colorAccent"
+            android:onClick="scoreQuiz"
+            android:text="@string/submit"
+            android:textSize="16sp" />
+
+        <!--Reset-->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="8dp"
+            android:background="@color/colorAccent"
+            android:onClick="reset"
+            android:text="@string/reset"
+            android:textSize="16sp" />
+    </LinearLayout>
+</ScrollView>

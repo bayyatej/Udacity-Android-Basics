@@ -18,12 +18,8 @@ package com.example.android.miwok;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -54,12 +50,12 @@ public class MainActivity extends AppCompatActivity
 		});
 
 		//OnClick for remaining Views
-		
+
 		//Get remaining views
 		TextView familyMembers = findViewById(R.id.family);
 		TextView colors = findViewById(R.id.colors);
 		TextView phrases = findViewById(R.id.phrases);
-		
+
 		//onClick for familyMembers
 		familyMembers.setOnClickListener(new View.OnClickListener()
 		{
@@ -73,7 +69,7 @@ public class MainActivity extends AppCompatActivity
 				startActivity(familyMembersIntent);
 			}
 		});
-		
+
 		//onClick for Colors
 		colors.setOnClickListener(new View.OnClickListener()
 		{
@@ -87,7 +83,7 @@ public class MainActivity extends AppCompatActivity
 				startActivity(colorsIntent);
 			}
 		});
-		
+
 		//onClick for phrases
 		phrases.setOnClickListener(new View.OnClickListener()
 		{
@@ -101,7 +97,7 @@ public class MainActivity extends AppCompatActivity
 				startActivity(phrasesIntent);
 			}
 		});
-		
+
 	}
 
 //	public void openNumbersList(View view)

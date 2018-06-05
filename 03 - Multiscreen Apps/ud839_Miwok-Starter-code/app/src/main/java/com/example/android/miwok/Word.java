@@ -15,7 +15,7 @@ public class Word
 	 * @param miwokTranslation:  String translation of word in Miwok
 	 * @param defaultTranslation String translation of word in default language
 	 */
-	public Word(String miwokTranslation, String defaultTranslation)
+	public Word(String defaultTranslation, String miwokTranslation)
 	{
 		mMiwokTranslation = "";
 		mMiwokTranslation = miwokTranslation;

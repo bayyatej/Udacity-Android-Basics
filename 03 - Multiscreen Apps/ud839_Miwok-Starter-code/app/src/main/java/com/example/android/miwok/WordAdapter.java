@@ -29,11 +29,12 @@ public class WordAdapter extends ArrayAdapter
 					parent, false);
 		}
 
-		TextView miwokView = listItemView.findViewById(R.id.miwok_text_view);
-		miwokView.setText(((Word) getItem(position)).getMiwokTranslation());
-
-		TextView defaultView = listItemView.findViewById(R.id.default_text_view);
-		defaultView.setText(((Word) getItem(position)).getDefaultTranslation());
+		//sets the text for miwok_text_view
+		((TextView) listItemView.findViewById(R.id.miwok_text_view)).setText((
+				(Word) getItem(position)).getMiwokTranslation());
+		//sets the text for default_text_view
+		((TextView) listItemView.findViewById(R.id.default_text_view)).setText(
+				((Word) getItem(position)).getDefaultTranslation());
 
 		return listItemView;
 	}

@@ -13,9 +13,8 @@ public class NumbersActivity extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_numbers);
+		setContentView(R.layout.word_list);
 
-		//populate words
 		ArrayList<Word> words = new ArrayList<>();
 		words.add(new Word("one", "lutti"));
 		words.add(new Word("two", "otiiko"));

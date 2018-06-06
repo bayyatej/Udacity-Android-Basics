@@ -9,6 +9,7 @@ public class Word
 	private String mMiwokTranslation;
 	private String mDefaultTranslation;
 	private int mImageId;
+	private int mAudioId;
 
 	/**
 	 * Constructs a word object using given parameters
@@ -16,10 +17,11 @@ public class Word
 	 * @param miwokTranslation:  String translation of word in Miwok
 	 * @param defaultTranslation String translation of word in default language
 	 */
-	public Word(String defaultTranslation, String miwokTranslation)
+	public Word(String defaultTranslation, String miwokTranslation, int audioId)
 	{
 		mMiwokTranslation = miwokTranslation;
 		mDefaultTranslation = defaultTranslation;
+		mAudioId = audioId;
 	}
 
 	/**
@@ -29,11 +31,12 @@ public class Word
 	 * @param miwokTranslation:   String translation of word in default language
 	 * @param imageId:            Integer Id of image to associate with Word
 	 */
-	public Word(String defaultTranslation, String miwokTranslation, int imageId)
+	public Word(String defaultTranslation, String miwokTranslation, int imageId, int audioId)
 	{
 		mMiwokTranslation = miwokTranslation;
 		mDefaultTranslation = defaultTranslation;
 		mImageId = imageId;
+		mAudioId = audioId;
 	}
 
 	/**
@@ -64,5 +67,14 @@ public class Word
 	public int getImageResourceId()
 	{
 		return mImageId;
+	}
+
+	/**
+	 * returns audio resource id
+	 * @return: audio resource id
+	 */
+	public int getAudioResourceId()
+	{
+		return mAudioId;
 	}
 }

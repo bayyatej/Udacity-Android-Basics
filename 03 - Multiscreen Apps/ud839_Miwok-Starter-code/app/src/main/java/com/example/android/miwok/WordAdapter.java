@@ -1,6 +1,8 @@
 package com.example.android.miwok;
 
 import android.app.Activity;
+import android.content.Context;
+import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 public class WordAdapter extends ArrayAdapter
 {
 	private int mColor;
+	private static MediaPlayer mediaPlayer;
 
 	public WordAdapter(Activity context, ArrayList<Word> words, int color)
 	{
@@ -25,7 +28,7 @@ public class WordAdapter extends ArrayAdapter
 
 	@NonNull
 	@Override
-	public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
+	public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent)
 	{
 		View listItemView = convertView;
 		if (convertView == null)
@@ -34,24 +37,47 @@ public class WordAdapter extends ArrayAdapter
 					parent, false);
 		}
 
+		Word word = (Word) getItem(position);
+
 		//sets background color for linearLayout
 		((LinearLayout) listItemView.findViewById(R.id.text_parent_linear_layout))
 				.setBackgroundResource(mColor);
 		//sets the text for miwok_text_view
-		((TextView) listItemView.findViewById(R.id.miwok_text_view)).setText((
-				(Word) getItem(position)).getMiwokTranslation());
+		((TextView) listItemView.findViewById(R.id.miwok_text_view)).setText(word.getMiwokTranslation());
+
 		//sets the text for default_text_view
-		((TextView) listItemView.findViewById(R.id.default_text_view)).setText(
-				((Word) getItem(position)).getDefaultTranslation());
+		((TextView) listItemView.findViewById(R.id.default_text_view)).setText(word.getDefaultTranslation());
+
 		//sets the image for image_view
 		ImageView imageView = listItemView.findViewById(R.id.image);
-		if (((Word) (getItem(position))).getImageResourceId() == 0)
+		if (word.getImageResourceId() == 0)
 		{
 			imageView.setVisibility(View.GONE);
 		} else
 		{
-			imageView.setImageResource(((Word) getItem(position)).getImageResourceId());
+			imageView.setImageResource(word.getImageResourceId());
 		}
+
+		//sets onClickListener for listView
+		final Context listItemViewContext = listItemView.getContext();
+		final int wordAudioId = word.getAudioResourceId();
+
+		listItemView.setOnClickListener(new View.OnClickListener()
+		{
+			public void onClick(View view)
+			{
+				mediaPlayer = MediaPlayer.create(listItemViewContext, wordAudioId);
+				mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener()
+				{
+					@Override
+					public void onCompletion(MediaPlayer mp)
+					{
+						mediaPlayer.release();
+					}
+				});
+				mediaPlayer.start();
+			}
+		});
 
 		return listItemView;
 	}

@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -19,6 +18,14 @@ public class WordAdapter extends ArrayAdapter
 {
 	private int mColor;
 	private static MediaPlayer mediaPlayer;
+	private static MediaPlayer.OnCompletionListener onCompletionListener = new MediaPlayer.OnCompletionListener()
+	{
+		@Override
+		public void onCompletion(MediaPlayer mp)
+		{
+			releaseMediaPlayerHelper();
+		}
+	};
 
 	public WordAdapter(Activity context, ArrayList<Word> words, int color)
 	{
@@ -40,8 +47,7 @@ public class WordAdapter extends ArrayAdapter
 		Word word = (Word) getItem(position);
 
 		//sets background color for linearLayout
-		((LinearLayout) listItemView.findViewById(R.id.text_parent_linear_layout))
-				.setBackgroundResource(mColor);
+		(listItemView.findViewById(R.id.text_parent_linear_layout)).setBackgroundResource(mColor);
 		//sets the text for miwok_text_view
 		((TextView) listItemView.findViewById(R.id.miwok_text_view)).setText(word.getMiwokTranslation());
 
@@ -66,19 +72,22 @@ public class WordAdapter extends ArrayAdapter
 		{
 			public void onClick(View view)
 			{
+				releaseMediaPlayerHelper();
 				mediaPlayer = MediaPlayer.create(listItemViewContext, wordAudioId);
-				mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener()
-				{
-					@Override
-					public void onCompletion(MediaPlayer mp)
-					{
-						mediaPlayer.release();
-					}
-				});
 				mediaPlayer.start();
+				mediaPlayer.setOnCompletionListener(onCompletionListener);
 			}
 		});
 
 		return listItemView;
+	}
+
+	private static void releaseMediaPlayerHelper()
+	{
+		if (mediaPlayer != null)
+		{
+			mediaPlayer.release();
+			mediaPlayer = null;
+		}
 	}
 }

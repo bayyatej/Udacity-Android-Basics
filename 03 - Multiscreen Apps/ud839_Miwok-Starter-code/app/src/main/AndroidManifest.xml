@@ -31,16 +31,32 @@
         </activity>
         <activity
             android:name=".PhrasesActivity"
-            android:label="@string/category_phrases" />
+            android:label="@string/category_phrases">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
         <activity
             android:name=".NumbersActivity"
-            android:label="@string/category_numbers" />
+            android:label="@string/category_numbers">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
         <activity
             android:name=".FamilyActivity"
-            android:label="@string/category_family" />
+            android:label="@string/category_family">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
         <activity
             android:name=".ColorsActivity"
-            android:label="@string/category_colors" />
+            android:label="@string/category_colors">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
     </application>
 
 </manifest>

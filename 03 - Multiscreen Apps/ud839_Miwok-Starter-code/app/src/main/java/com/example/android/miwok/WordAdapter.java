@@ -2,6 +2,7 @@ package com.example.android.miwok;
 
 import android.app.Activity;
 import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,8 +18,8 @@ import java.util.ArrayList;
 public class WordAdapter extends ArrayAdapter
 {
 	private int mColor;
-	private static MediaPlayer mediaPlayer;
-	private static MediaPlayer.OnCompletionListener onCompletionListener = new MediaPlayer.OnCompletionListener()
+	private static MediaPlayer mMediaPlayer;
+	private MediaPlayer.OnCompletionListener onCompletionListener = new MediaPlayer.OnCompletionListener()
 	{
 		@Override
 		public void onCompletion(MediaPlayer mp)
@@ -26,11 +27,42 @@ public class WordAdapter extends ArrayAdapter
 			releaseMediaPlayerHelper();
 		}
 	};
+	private static AudioManager mAudioManager;
+	private static AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener;
 
 	public WordAdapter(Activity context, ArrayList<Word> words, int color)
 	{
 		super(context, 0, words);
 		mColor = color;
+		mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+		mOnAudioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener()
+		{
+			@Override
+			public void onAudioFocusChange(int focusChange)
+			{
+				if (focusChange == AudioManager.AUDIOFOCUS_GAIN)
+				{
+					if (mMediaPlayer != null)
+					{
+						mMediaPlayer.start();
+					}
+				} else if (focusChange == AudioManager.AUDIOFOCUS_LOSS)
+				{
+					if (mMediaPlayer != null)
+					{
+						mMediaPlayer.stop();
+					}
+					WordAdapter.releaseMediaPlayerHelper();
+				} else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT || focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK)
+				{
+					if (mMediaPlayer != null)
+					{
+						mMediaPlayer.pause();
+						mMediaPlayer.seekTo(0);
+					}
+				}
+			}
+		};
 	}
 
 	@NonNull
@@ -65,29 +97,35 @@ public class WordAdapter extends ArrayAdapter
 		}
 
 		//sets onClickListener for listView
-		final Context listItemViewContext = listItemView.getContext();
+		final Context playIconContext = listItemView.findViewById(R.id.play_icon_image_view).getContext();
 		final int wordAudioId = word.getAudioResourceId();
-
 		listItemView.setOnClickListener(new View.OnClickListener()
 		{
 			public void onClick(View view)
 			{
 				releaseMediaPlayerHelper();
-				mediaPlayer = MediaPlayer.create(listItemViewContext, wordAudioId);
-				mediaPlayer.start();
-				mediaPlayer.setOnCompletionListener(onCompletionListener);
+				mMediaPlayer = MediaPlayer.create(playIconContext, wordAudioId);
+				onPlay();
 			}
 		});
 
 		return listItemView;
 	}
 
-	private static void releaseMediaPlayerHelper()
+	public static void releaseMediaPlayerHelper()
 	{
-		if (mediaPlayer != null)
+		if (mMediaPlayer != null)
 		{
-			mediaPlayer.release();
-			mediaPlayer = null;
+			mMediaPlayer.release();
+			mMediaPlayer = null;
+			mAudioManager.abandonAudioFocus(mOnAudioFocusChangeListener);
 		}
+	}
+
+	private void onPlay()
+	{
+		mAudioManager.requestAudioFocus(mOnAudioFocusChangeListener, AudioManager.AUDIOFOCUS_GAIN, AudioManager.STREAM_MUSIC);
+		mMediaPlayer.start();
+		mMediaPlayer.setOnCompletionListener(onCompletionListener);
 	}
 }

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 public class NumbersActivity extends AppCompatActivity
 {
+//	private WordAdapter mAdapter;
+//	private AudioManager mAudioManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -27,8 +29,22 @@ public class NumbersActivity extends AppCompatActivity
 		words.add(new Word("nine", "wo’e", R.drawable.number_nine, R.raw.number_nine));
 		words.add(new Word("ten", "na’aacha", R.drawable.number_ten, R.raw.number_ten));
 
-		WordAdapter adapter = new WordAdapter(this, words, R.color.category_numbers);
+		WordAdapter mAdapter = new WordAdapter(this, words, R.color.category_numbers);
 		ListView listView = findViewById(R.id.list);
-		listView.setAdapter(adapter);
+		listView.setAdapter(mAdapter);
+	}
+
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
+		WordAdapter.releaseMediaPlayerHelper();
+	}
+
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+		WordAdapter.releaseMediaPlayerHelper();
 	}
 }

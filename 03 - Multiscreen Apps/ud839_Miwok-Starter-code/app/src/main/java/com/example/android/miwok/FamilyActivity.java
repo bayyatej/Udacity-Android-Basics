@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class FamilyActivity extends AppCompatActivity
 {
+	private WordAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -38,5 +39,19 @@ public class FamilyActivity extends AppCompatActivity
 				R.color.category_family);
 		ListView listView = findViewById(R.id.list);
 		listView.setAdapter(adapter);
+	}
+
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
+		WordAdapter.releaseMediaPlayerHelper();
+	}
+
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+		WordAdapter.releaseMediaPlayerHelper();
 	}
 }

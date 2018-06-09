@@ -7,19 +7,19 @@
     android:orientation="horizontal">
 
     <ImageView
-        android:id="@+id/location_image"
+        android:id="@+id/destination_image"
         android:layout_width="88dp"
         android:layout_height="88dp"
         tools:background="@color/colorPrimaryDark" />
 
     <RelativeLayout
-        android:id="@+id/location_details_parent"
+        android:id="@+id/destination_details_parent"
         android:layout_width="match_parent"
         android:layout_height="88dp"
         tools:background="@color/colorAccent">
 
         <TextView
-            android:id="@+id/location_name"
+            android:id="@+id/destination_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -31,7 +31,7 @@
             android:id="@+id/address_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/location_name"
+            android:layout_below="@+id/destination_name"
             android:layout_marginLeft="16dp"
             android:drawableLeft="@drawable/baseline_commute_black_24"
             android:text="@string/directions" />
@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/location_name"
+            android:layout_below="@+id/destination_name"
             android:layout_marginRight="16dp"
             android:drawableLeft="@drawable/baseline_phone_black_24"
             android:text="@string/call" />

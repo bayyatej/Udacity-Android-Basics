@@ -11,10 +11,25 @@ public class Destination
 	 * Query string for google maps url api
 	 */
 	private String mApiQueryUrl;
-	private int mImageId;
-	private static final String API_URL = "https://www.google.com/maps/dir/?api=1";
+	private int mImageId = 0;
+	private static final String API_URL = "https://www.google.com/maps/dir/?api=1&destination=";
 	private static final String API_LOCATION = "%2C+Novi%2C+MI";
 	private static final String BAD_API_URL = "BAD API URL";
+
+	public Destination(String name, String phoneNumber)
+	{
+		mName = name;
+		mPhoneNumber = phoneNumber;
+		mImageId = 0;
+
+		try
+		{
+			mApiQueryUrl = API_URL + URLEncoder.encode(mName, "utf-8") + API_LOCATION;
+		} catch (UnsupportedEncodingException e)
+		{
+			mApiQueryUrl = BAD_API_URL;
+		}
+	}
 
 	public Destination(String name, String phoneNumber, int imageId)
 	{

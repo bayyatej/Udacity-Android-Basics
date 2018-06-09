@@ -1,11 +1,6 @@
 package com.example.android.miwok;
 
-import android.app.Activity;
 import android.content.Context;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,26 +13,31 @@ import java.util.ArrayList;
 
 public class WordAdapter extends ArrayAdapter
 {
-	/** Resource ID for the background color for this list of words */
+	/**
+	 * Resource ID for the background color for this list of words
+	 */
 	private int mColorResourceId;
 
 	/**
 	 * Create a new {@link WordAdapter} object.
 	 *
-	 * @param context is the current context (i.e. Activity) that the adapter is being created in.
-	 * @param words is the list of {@link Word}s to be displayed.
+	 * @param context         is the current context (i.e. Activity) that the adapter is being created in.
+	 * @param words           is the list of {@link Word}s to be displayed.
 	 * @param colorResourceId is the resource ID for the background color for this list of words
 	 */
-	public WordAdapter(Context context, ArrayList<Word> words, int colorResourceId) {
+	public WordAdapter(Context context, ArrayList<Word> words, int colorResourceId)
+	{
 		super(context, 0, words);
 		mColorResourceId = colorResourceId;
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(int position, View convertView, ViewGroup parent)
+	{
 		// Check if an existing view is being reused, otherwise inflate the view
 		View listItemView = convertView;
-		if (listItemView == null) {
+		if (listItemView == null)
+		{
 			listItemView = LayoutInflater.from(getContext()).inflate(
 					R.layout.list_item, parent, false);
 		}

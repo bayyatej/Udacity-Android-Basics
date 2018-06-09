@@ -57,17 +57,13 @@ public class WordAdapter extends ArrayAdapter
 		// the default TextView.
 		defaultTextView.setText(currentWord.getDefaultTranslation());
 
-		// Find the ImageView in the list_item.xml layout with the ID image.
-		ImageView imageView = (ImageView) listItemView.findViewById(R.id.image);
-		// Check if an image is provided for this word or not
-		if (currentWord.hasImage()) {
-			// If an image is available, display the provided image based on the resource ID
-			imageView.setImageResource(currentWord.getImageResourceId());
-			// Make sure the view is visible
-			imageView.setVisibility(View.VISIBLE);
-		} else {
-			// Otherwise hide the ImageView (set visibility to GONE)
+		ImageView imageView = listItemView.findViewById(R.id.image);
+		if (currentWord.getImageResourceId() == 0)
+		{
 			imageView.setVisibility(View.GONE);
+		} else
+		{
+			imageView.setImageResource(currentWord.getImageResourceId());
 		}
 
 		// Set the theme color for the list item

@@ -73,6 +73,7 @@ public class PhrasesFragment extends Fragment
 		WordAdapter adapter;
 		mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
 		final ArrayList<Word> words = new ArrayList<>();
+
 		words.add(new Word("Where are you going?", "minto wuksus", R.raw.phrase_where_are_you_going));
 		words.add(new Word("What is your name?", "tinnә oyaase'nә", R.raw.phrase_what_is_your_name));
 		words.add(new Word("My name is...", "oyaaset...", R.raw.phrase_my_name_is));
@@ -84,11 +85,9 @@ public class PhrasesFragment extends Fragment
 		words.add(new Word("Let's go.", "yoowutis", R.raw.phrase_lets_go));
 		words.add(new Word("Come here.", "әnni'nem", R.raw.phrase_come_here));
 
-		adapter = new WordAdapter(getActivity(), words, R.color.category_numbers);
-
+		adapter = new WordAdapter(getActivity(), words, R.color.category_phrases);
 
 		listView.setAdapter(adapter);
-
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
 		{
 			@Override
@@ -106,7 +105,6 @@ public class PhrasesFragment extends Fragment
 				}
 			}
 		});
-
 		return rootView;
 	}
 

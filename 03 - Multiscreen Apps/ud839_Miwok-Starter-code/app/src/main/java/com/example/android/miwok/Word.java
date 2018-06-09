@@ -10,6 +10,10 @@ public class Word
 	private String mDefaultTranslation;
 	private int mImageId;
 	private int mAudioId;
+	/**
+	 * Constant value that represents no image was provided for this word
+	 */
+	private static final int NO_IMAGE_PROVIDED = -1;
 
 	/**
 	 * Constructs a word object using given parameters
@@ -93,5 +97,13 @@ public class Word
 				", mImageId=" + mImageId +
 				", mAudioId=" + mAudioId +
 				'}';
+	}
+
+	/**
+	 * Returns whether or not there is an image for this word.
+	 */
+	public boolean hasImage()
+	{
+		return mImageId != NO_IMAGE_PROVIDED;
 	}
 }

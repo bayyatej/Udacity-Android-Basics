@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/location_list_item"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/location_image"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        tools:background="@color/colorPrimaryDark" />
+
+    <RelativeLayout
+        android:id="@+id/location_details_parent"
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        tools:background="@color/colorAccent">
+
+        <TextView
+            android:id="@+id/location_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:textSize="24sp"
+            tools:text="@tools:sample/cities" />
+
+        <Button
+            android:id="@+id/address_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/location_name"
+            android:layout_marginLeft="16dp"
+            
+            android:text="@string/directions" />
+
+        <Button
+            android:id="@+id/call_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/location_name"
+            android:layout_marginRight="16dp"
+            android:drawableLeft="@drawable/baseline_phone_black_24"
+            android:text="@string/call" />
+    </RelativeLayout>
+
+</LinearLayout>
+

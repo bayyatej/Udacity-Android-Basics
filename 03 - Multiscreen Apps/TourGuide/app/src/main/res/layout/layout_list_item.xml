@@ -23,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
             android:textSize="24sp"
             tools:text="@tools:sample/cities" />
 
@@ -32,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/location_name"
             android:layout_marginLeft="16dp"
-            
+            android:drawableLeft="@drawable/baseline_commute_black_24"
             android:text="@string/directions" />
 
         <Button

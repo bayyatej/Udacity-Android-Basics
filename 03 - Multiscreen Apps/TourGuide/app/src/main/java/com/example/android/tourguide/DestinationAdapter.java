@@ -21,6 +21,12 @@ public class DestinationAdapter extends ArrayAdapter
 {
 	private int mColorId;
 
+	/**
+	 *
+	 * @param context
+	 * @param destinations
+	 * @param colorId
+	 */
 	public DestinationAdapter(Context context, ArrayList<Destination> destinations, int colorId)
 	{
 		super(context, 0, destinations);

@@ -3,4 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <!--Fragment Colors-->
+    <color name="restaurants">#E28F41</color>
+    <color name="parks">#18453B</color>
+    <color name="cafes">#6C9AC3</color>
 </resources>

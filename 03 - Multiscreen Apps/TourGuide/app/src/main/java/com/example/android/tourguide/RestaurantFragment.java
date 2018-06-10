@@ -30,7 +30,7 @@ public class RestaurantFragment extends Fragment
 		View rootView = inflater.inflate(R.layout.destination_list, container, false);
 		ListView restaurantDestinationList = rootView.findViewById(R.id.destination_list);
 
-		final ArrayList<Destination> restaurants = new ArrayList<>();
+		final ArrayList<Destination> restaurants = new ArrayList<Destination>();
 
 		//populate restaurants with restaurants
 		restaurants.add(new Destination("Turmerican", "2483053357"));

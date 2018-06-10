@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#008183</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <!--Fragment Colors-->
     <color name="restaurants">#E28F41</color>
-    <color name="parks">#18453B</color>
+    <color name="parks">#94AE4A</color>
     <color name="cafes">#6C9AC3</color>
+    <color name="textColor">#FFFFFF</color>
 </resources>

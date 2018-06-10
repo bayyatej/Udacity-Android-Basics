@@ -22,7 +22,6 @@ public class DestinationAdapter extends ArrayAdapter
 	private int mColorId;
 
 	/**
-	 *
 	 * @param context
 	 * @param destinations
 	 * @param colorId
@@ -38,6 +37,7 @@ public class DestinationAdapter extends ArrayAdapter
 	public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
 	{
 		final Context context = getContext();
+		final int color = ContextCompat.getColor(context, mColorId);
 		View layoutListItemView = convertView;
 		if (layoutListItemView == null)
 		{
@@ -84,7 +84,6 @@ public class DestinationAdapter extends ArrayAdapter
 		});
 		//Set background of destination details view
 		RelativeLayout destinationDetailsRelativeLayout = layoutListItemView.findViewById(R.id.destination_details_parent);
-		int color = ContextCompat.getColor(context, mColorId);
 		destinationDetailsRelativeLayout.setBackgroundColor(color);
 
 		return layoutListItemView;

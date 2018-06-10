@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
+            android:textColor="@color/textColor"
             android:textSize="24sp"
             tools:text="@tools:sample/cities" />
 

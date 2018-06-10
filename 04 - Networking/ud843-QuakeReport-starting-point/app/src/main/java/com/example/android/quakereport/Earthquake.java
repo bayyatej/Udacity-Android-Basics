@@ -2,18 +2,18 @@ package com.example.android.quakereport;
 
 public class Earthquake
 {
-	private float mMagnitude;
+	private double mMagnitude;
 	private String mLocation;
 	private String mDate;
 
-	public Earthquake(float magnitude, String location, String date)
+	public Earthquake(double magnitude, String location, String date)
 	{
 		mMagnitude = magnitude;
 		mLocation = location;
 		mDate = date;
 	}
 
-	public float getMagnitude()
+	public double getMagnitude()
 	{
 		return mMagnitude;
 	}

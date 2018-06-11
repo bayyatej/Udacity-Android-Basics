@@ -4,13 +4,13 @@ public class Earthquake
 {
 	private double mMagnitude;
 	private String mLocation;
-	private String mDate;
+	private String mDateUnixTime;
 
 	public Earthquake(double magnitude, String location, String date)
 	{
 		mMagnitude = magnitude;
 		mLocation = location;
-		mDate = date;
+		mDateUnixTime = date;
 	}
 
 	public double getMagnitude()
@@ -25,6 +25,6 @@ public class Earthquake
 
 	public String getDate()
 	{
-		return mDate;
+		return mDateUnixTime;
 	}
 }

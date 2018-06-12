@@ -60,17 +60,19 @@ public final class QueryUtils
 			for (int i = 0; i < featuresArr.length(); i++)
 			{
 				//Will be used to construct earthquake objects
-				double magnitude = 0;
-				String location = "";
-				String date = "";
+				double magnitude;
+				String location;
+				String url;
+				long date;
 
 				JSONObject propertiesObj = featuresArr.optJSONObject(i).optJSONObject("properties");
 
 				magnitude = propertiesObj.optDouble("mag");
 				location = propertiesObj.optString("place");
-				date = propertiesObj.optString("time");
+				date = propertiesObj.optLong("time");
+				url = propertiesObj.optString("url");
 
-				earthquakes.add(new Earthquake(magnitude, location, date));
+				earthquakes.add(new Earthquake(magnitude, location, date, url));
 			}
 
 		} catch (JSONException e)

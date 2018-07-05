@@ -15,7 +15,8 @@
  */
 package com.example.android.quakereport;
 
-import android.os.AsyncTask;
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
@@ -23,45 +24,53 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EarthquakeActivity extends AppCompatActivity
+public class EarthquakeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Earthquake>>
 {
-	private class EarthquakeAsyncTask extends AsyncTask<String, Void, List<Earthquake>>
-	{
-		@Override
-		protected void onPostExecute(List<Earthquake> earthquakes)
-		{
-			if (earthquakes != null)
-			{
-				updateUi(earthquakes);
-			}
-		}
-
-		@Override
-		protected List<Earthquake> doInBackground(String... strings)
-		{
-			if (strings.length > 0 && strings[0] != null)
-			{
-				return QueryUtils.extractEarthquakes(strings[0]);
-			} else
-			{
-				return null;
-			}
-		}
-	}
+	private final String mURL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=5&limit=10";
+	private EarthquakeAdapter mAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.earthquake_list);
-
-		new EarthquakeAsyncTask().execute("https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=5&limit=10");
+		getLoaderManager().initLoader(0, null, this).forceLoad();
 	}
 
 	private void updateUi(List<Earthquake> earthquakes)
 	{
-		ListView earthquakeListView = (ListView) findViewById(R.id.earthquake_list);
-		EarthquakeAdapter earthquakeAdapter = new EarthquakeAdapter(this, (ArrayList<Earthquake>) earthquakes);
-		earthquakeListView.setAdapter(earthquakeAdapter);
+		ListView earthquakeListView = findViewById(R.id.earthquake_list);
+		mAdapter = new EarthquakeAdapter(this, (ArrayList<Earthquake>) earthquakes);
+		earthquakeListView.setAdapter(mAdapter);
+	}
+
+	@Override
+	public Loader<List<Earthquake>> onCreateLoader(int id, Bundle args)
+	{
+		return new EarthquakeLoader(this, mURL);
+	}
+
+	@Override
+	public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes)
+	{
+		if (mAdapter != null)
+		{
+			mAdapter.clear();
+		}
+
+		if (earthquakes != null && !earthquakes.isEmpty())
+		{
+			updateUi(earthquakes);
+		}
+	}
+
+	@Override
+	public void onLoaderReset(Loader<List<Earthquake>> loader)
+	{
+		if (mAdapter != null)
+		{
+			mAdapter.clear();
+		}
+		/*updateUi(new ArrayList<Earthquake>());*/
 	}
 }

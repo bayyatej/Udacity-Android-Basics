@@ -1,7 +1,7 @@
 package com.example.android.bookfinder;
 
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 
 public class BookActivity extends AppCompatActivity
 {
@@ -10,5 +10,6 @@ public class BookActivity extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_book);
 	}
 }

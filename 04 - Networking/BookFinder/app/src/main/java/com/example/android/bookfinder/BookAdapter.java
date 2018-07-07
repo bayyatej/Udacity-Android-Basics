@@ -40,7 +40,7 @@ public class BookAdapter extends ArrayAdapter
 
 		if (bookListView != null)
 		{
-			bookListView = LayoutInflater.from(getContext()).inflate(R.layout.activity_book_list, parent, false);
+			bookListView = LayoutInflater.from(getContext()).inflate(R.layout.book_list, parent, false);
 		}
 
 

@@ -19,6 +19,11 @@ import java.util.List;
 
 public class QueryUtils
 {
+	private QueryUtils()
+	{
+
+	}
+
 	public static List<Book> extractBooks(String queryUrl)
 	{
 		ArrayList<Book> bookList = new ArrayList<>();

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BookFinder</string>
+    <string name="search_hint">Enter a search query</string>
+    <string name="search_button">Search</string>
 </resources>

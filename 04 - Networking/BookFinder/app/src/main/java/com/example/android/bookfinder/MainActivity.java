@@ -1,7 +1,10 @@
 package com.example.android.bookfinder;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -11,5 +14,14 @@ public class MainActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+	}
+
+	public void onSearch(View view)
+	{
+		String query = ((EditText) findViewById(R.id.search_box)).getText().toString();
+
+		Intent bookListIntent = new Intent(this, BookActivity.class);
+		bookListIntent.putExtra("query", query);
+		startActivity(bookListIntent);
 	}
 }

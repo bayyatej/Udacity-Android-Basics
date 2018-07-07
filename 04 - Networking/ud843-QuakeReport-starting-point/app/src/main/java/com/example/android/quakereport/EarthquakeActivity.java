@@ -16,10 +16,16 @@
 package com.example.android.quakereport;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +41,24 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.earthquake_list);
 		getLoaderManager().initLoader(0, null, this).forceLoad();
+		ListView listView = findViewById(R.id.earthquake_list);
+		listView.setEmptyView(findViewById(R.id.empty));
+
+		//check for network connectivity, dismissing loader and showing empty view if no internet
+		ConnectivityManager cm =
+				(ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+		if (!(activeNetwork != null && activeNetwork.isConnectedOrConnecting()))
+		{
+			((ProgressBar) findViewById(R.id.loading_spinner)).setVisibility(View.INVISIBLE);
+			((TextView) findViewById(R.id.empty)).setText(R.string.no_internet);
+		}
+		else
+		{
+			//set text of empty view to display if no earthquakes found
+			((TextView) findViewById(R.id.empty)).setText(R.string.empty_view);
+		}
 	}
 
 	private void updateUi(List<Earthquake> earthquakes)
@@ -53,6 +77,9 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 	@Override
 	public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes)
 	{
+		//dismiss loading indicator
+		((ProgressBar) findViewById(R.id.loading_spinner)).setVisibility(View.INVISIBLE);
+
 		if (mAdapter != null)
 		{
 			mAdapter.clear();
@@ -71,6 +98,5 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 		{
 			mAdapter.clear();
 		}
-		/*updateUi(new ArrayList<Earthquake>());*/
 	}
 }

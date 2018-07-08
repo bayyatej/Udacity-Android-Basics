@@ -14,7 +14,7 @@ import java.util.List;
 
 public class BookAdapter extends ArrayAdapter
 {
-	public BookAdapter(@NonNull Context context, int resource, @NonNull List<Book> books)
+	public BookAdapter(@NonNull Context context, @NonNull List<Book> books)
 	{
 		super(context, 0, books);
 	}
@@ -29,6 +29,11 @@ public class BookAdapter extends ArrayAdapter
 		ArrayList<String> authors = (ArrayList<String>) book.getmAuthors();
 		String authorsString = "";
 
+		if (bookListView == null)
+		{
+			bookListView = LayoutInflater.from(getContext()).inflate(R.layout.book_list_item, parent, false);
+		}
+
 		for (String author : authors)
 		{
 			authorsString += author + ", ";
@@ -37,12 +42,6 @@ public class BookAdapter extends ArrayAdapter
 
 		((TextView) bookListView.findViewById(R.id.book_title)).setText(title);
 		((TextView) bookListView.findViewById(R.id.book_author)).setText(authorsString);
-
-		if (bookListView != null)
-		{
-			bookListView = LayoutInflater.from(getContext()).inflate(R.layout.book_list, parent, false);
-		}
-
 
 		return bookListView;
 	}

@@ -18,12 +18,12 @@ public class BookLoader extends AsyncTaskLoader<List<Book>>
 	@Override
 	public List<Book> loadInBackground()
 	{
-		if (!(mURL.equals("")))
-		{
-			return QueryUtils.extractBooks(mURL);
-		} else
+		if (mURL == null)
 		{
 			return null;
+		} else
+		{
+			return QueryUtils.extractBooks(mURL);
 		}
 	}
 

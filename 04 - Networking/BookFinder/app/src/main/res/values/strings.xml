@@ -2,4 +2,6 @@
     <string name="app_name">BookFinder</string>
     <string name="search_hint">Enter a search query</string>
     <string name="search_button">Search</string>
+    <string name="empty_view">No books to report</string>
+    <string name="no_internet">Unable to connect to internet</string>
 </resources>

@@ -8,19 +8,19 @@ import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity
 {
+	private Intent bookListIntent;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		bookListIntent = new Intent(getApplicationContext(), BookActivity.class);
 	}
 
 	public void onSearch(View view)
 	{
 		String query = ((EditText) findViewById(R.id.search_box)).getText().toString();
-
-		Intent bookListIntent = new Intent(this, BookActivity.class);
 		bookListIntent.putExtra("query", query);
 		startActivity(bookListIntent);
 	}

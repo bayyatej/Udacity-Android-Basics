@@ -19,7 +19,8 @@ import java.util.ArrayList;
 public class NewsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<News>>
 {
 	private Intent mIntent;
-	private String mQuery;
+	private String mQueryUrl;
+	private NewsAdapter mNewsAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -28,16 +29,23 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
 		setContentView(R.layout.news_list);
 		((ListView) findViewById(R.id.news_list_view)).setEmptyView(findViewById(R.id.empty_view));
 		mIntent = getIntent();
-		mQuery = prepareUrl();
+		mQueryUrl = prepareUrl();
 		checkNetworkStatus();
 	}
 
+	/**
+	 * If there is no network connection update UI
+	 */
 	private void checkNetworkStatus()
 	{
 		ConnectivityManager cm =
 				(ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+		NetworkInfo activeNetwork = null;
+		if (cm != null)
+		{
+			activeNetwork = cm.getActiveNetworkInfo();
+		}
 		if (activeNetwork != null && activeNetwork.isConnected())
 		{
 			getLoaderManager().initLoader(1, null, this).forceLoad();
@@ -50,38 +58,65 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
 		}
 	}
 
+	/**
+	 * Helper method returning query string
+	 *
+	 * @return query string
+	 */
 	private String prepareUrl()
 	{
 		try
 		{
-			mQuery = URLEncoder.encode(mIntent.getStringExtra("query"), "UTF-8");
+			mQueryUrl = URLEncoder.encode(mIntent.getStringExtra("query"), "UTF-8");
 		} catch (UnsupportedEncodingException e)
 		{
 			e.printStackTrace();
 		}
 		String API_KEY = "&api-key=6c42e62f-815c-43a7-a498-9b7731152369";
-		String API_ENDPOINT = "https://content.guardianapis.com/search?q=";
-		return API_ENDPOINT + mQuery + API_KEY;
+		String API_ENDPOINT = "http://content.guardianapis.com/search?q=";
+		return API_ENDPOINT + mQueryUrl + API_KEY;
 	}
 
-	// Todo need to implement onCreateLoader before testing submit query
 	@Override
 	public Loader<ArrayList<News>> onCreateLoader(int id, Bundle args)
 	{
-		return null;
+		return new NewsLoader(this, mQueryUrl);
 	}
 
-	// Todo need to implement onLoadFinished before testing submit query
 	@Override
-	public void onLoadFinished(Loader<ArrayList<News>> loader, ArrayList<News> data)
+	public void onLoadFinished(Loader<ArrayList<News>> loader, ArrayList<News> news)
 	{
+		findViewById(R.id.progress_spinner).setVisibility(View.GONE);
 
+		if (mNewsAdapter != null)
+		{
+			mNewsAdapter.clear();
+		}
+
+		if (news != null)
+		{
+			updateUi(news);
+		}
 	}
 
-	// Todo need to implement onLoaderReset before testing submit query
 	@Override
 	public void onLoaderReset(Loader<ArrayList<News>> loader)
 	{
+		if (mNewsAdapter != null)
+		{
+			mNewsAdapter.clear();
+		}
+	}
 
+	/**
+	 * Helper method to update ui by attaching adapter to the ListView
+	 *
+	 * @param news: list of news objects used to populate news_list_items
+	 */
+	private void updateUi(ArrayList<News> news)
+	{
+		ListView newsListView = findViewById(R.id.news_list_view);
+		mNewsAdapter = new NewsAdapter(this, news);
+		newsListView.setAdapter(mNewsAdapter);
 	}
 }

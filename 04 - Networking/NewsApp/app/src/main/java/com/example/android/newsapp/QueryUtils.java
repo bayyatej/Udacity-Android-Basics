@@ -37,11 +37,12 @@ public class QueryUtils
 		{
 			try
 			{
-				JSONArray responseJSONArr = (new JSONObject(jsonResponse)).optJSONArray("results");
+				JSONObject responseJSONObj = (new JSONObject(jsonResponse)).optJSONObject("response");
+				JSONArray resultsJSONArr = responseJSONObj.getJSONArray("results");
 
-				for (int i = 0; i < responseJSONArr.length(); i++)
+				for (int i = 0; i < resultsJSONArr.length(); i++)
 				{
-					JSONObject newsJSONObj = (JSONObject) responseJSONArr.opt(i);
+					JSONObject newsJSONObj = (JSONObject) resultsJSONArr.opt(i);
 					newsList.add(new News(newsJSONObj.optString("webTitle"), newsJSONObj.optString("sectionName"), newsJSONObj.optString("webUrl")));
 				}
 			} catch (JSONException e)
@@ -77,6 +78,7 @@ public class QueryUtils
 					httpURLConnection.setReadTimeout(10000 /* milliseconds */);
 					httpURLConnection.setConnectTimeout(15000 /* milliseconds */);
 					httpURLConnection.setRequestMethod("GET");
+					Log.d(LOG_TAG, mQueryUrl.toString());
 					httpURLConnection.connect();
 
 					// If the request was successful (response code 200),

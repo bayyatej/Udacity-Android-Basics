@@ -32,6 +32,7 @@ public class NewsAdapter extends ArrayAdapter
 			newsListItemView = LayoutInflater.from(getContext()).inflate(R.layout.news_list_item, parent, false);
 		}
 
+		assert newsItem != null;
 		((TextView) newsListItemView.findViewById(R.id.pillar)).setText(newsItem.getmPillar());
 		((TextView) newsListItemView.findViewById(R.id.article)).setText(newsItem.getmTitle());
 

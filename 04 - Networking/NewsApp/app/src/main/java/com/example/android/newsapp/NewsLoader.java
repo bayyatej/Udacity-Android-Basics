@@ -7,23 +7,23 @@ import java.util.ArrayList;
 
 public class NewsLoader extends AsyncTaskLoader<ArrayList<News>>
 {
-	private String queryUrlString;
+	private String mQueryUrlString;
 
 	public NewsLoader(Context context, String url)
 	{
 		super(context);
-		queryUrlString = url;
+		mQueryUrlString = url;
 	}
 
 	@Override
 	public ArrayList<News> loadInBackground()
 	{
-		if (queryUrlString == null)
+		if (mQueryUrlString == null)
 		{
 			return null;
 		} else
 		{
-			return QueryUtils.extractNews(queryUrlString);
+			return QueryUtils.extractNews(mQueryUrlString);
 		}
 	}
 

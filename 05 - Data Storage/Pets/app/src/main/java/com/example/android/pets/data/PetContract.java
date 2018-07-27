@@ -15,7 +15,7 @@ public class PetContract
 		 * Column names
 		 */
 		//Pet's unique ID
-		public static final String COLUMN_PET_ID = BaseColumns._ID;
+		public static final String _ID = BaseColumns._ID;
 		//Pet's name
 		public static final String COLUMN_PET_NAME = "Name";
 		//Pet's breed

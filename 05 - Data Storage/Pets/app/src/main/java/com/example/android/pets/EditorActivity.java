@@ -15,6 +15,8 @@
  */
 package com.example.android.pets;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +30,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.android.pets.data.PetContract.PetsEntry;
+import com.example.android.pets.data.PetDBHelper;
 
 /**
  * Allows user to create a new pet or edit an existing one.
@@ -140,7 +143,8 @@ public class EditorActivity extends AppCompatActivity
 		{
 			// Respond to a click on the "Save" menu option
 			case R.id.action_save:
-				// Do nothing for now
+				savePet();
+				finish();
 				return true;
 			// Respond to a click on the "Delete" menu option
 			case R.id.action_delete:
@@ -153,5 +157,27 @@ public class EditorActivity extends AppCompatActivity
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	/**
+	 * Helper method to pull user input from EditorActivity and save input to database
+	 */
+	private void savePet()
+	{
+		PetDBHelper petDBHelper = new PetDBHelper(this);
+		SQLiteDatabase shelterDBWriteable = petDBHelper.getWritableDatabase();
+
+		String petName = mNameEditText.getText().toString().trim();
+		String petBreed = mBreedEditText.getText().toString().trim();
+		int petGender = mGender;
+		int petWeight = Integer.valueOf(mWeightEditText.getText().toString().trim());
+
+		ContentValues petValues = new ContentValues();
+		petValues.put(PetsEntry.COLUMN_PET_NAME, petName);
+		petValues.put(PetsEntry.COLUMN_PET_BREED, petBreed);
+		petValues.put(PetsEntry.COLUMN_PET_GENDER, petGender);
+		petValues.put(PetsEntry.COLUMN_PET_WEIGHT, petWeight);
+
+		shelterDBWriteable.insert(PetsEntry.TABLE_NAME, null, petValues);
 	}
 }

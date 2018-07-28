@@ -1,5 +1,6 @@
 package com.example.android.pets;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,6 +20,7 @@ import com.example.android.pets.data.PetDBHelper;
  */
 public class CatalogActivity extends AppCompatActivity
 {
+	private PetDBHelper mDbHelper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -37,7 +39,7 @@ public class CatalogActivity extends AppCompatActivity
 				startActivity(intent);
 			}
 		});
-
+		mDbHelper = new PetDBHelper(this);
 		displayDatabaseInfo();
 	}
 
@@ -49,7 +51,6 @@ public class CatalogActivity extends AppCompatActivity
 	{
 		// To access our database, we instantiate our subclass of SQLiteOpenHelper
 		// and pass the context, which is the current activity.
-		PetDBHelper mDbHelper = new PetDBHelper(this);
 
 		// Create and/or open a database to read from it
 		SQLiteDatabase db = mDbHelper.getReadableDatabase();
@@ -61,7 +62,7 @@ public class CatalogActivity extends AppCompatActivity
 		{
 			// Display the number of rows in the Cursor (which reflects the number of rows in the
 			// pets table in the database).
-			TextView displayView = (TextView) findViewById(R.id.text_view_pet);
+			TextView displayView = findViewById(R.id.text_view_pet);
 			displayView.setText("Number of rows in pets database table: " + cursor.getCount());
 		} finally
 		{
@@ -88,7 +89,14 @@ public class CatalogActivity extends AppCompatActivity
 		{
 			// Respond to a click on the "Insert dummy data" menu option
 			case R.id.action_insert_dummy_data:
-				// Do nothing for now
+				ContentValues totoValues = new ContentValues();
+				totoValues.put(PetsEntry.COLUMN_PET_NAME, "Toto");
+				totoValues.put(PetsEntry.COLUMN_PET_BREED, "Terrier");
+				totoValues.put(PetsEntry.COLUMN_PET_GENDER, 1);
+				totoValues.put(PetsEntry.COLUMN_PET_WEIGHT, 7);
+				SQLiteDatabase shelterDBWriteable = mDbHelper.getWritableDatabase();
+				shelterDBWriteable.insert(PetsEntry.TABLE_NAME, null, totoValues);
+				displayDatabaseInfo();
 				return true;
 			// Respond to a click on the "Delete all entries" menu option
 			case R.id.action_delete_all_entries:

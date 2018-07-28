@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.pets.data.PetContract.PetsEntry;
 import com.example.android.pets.data.PetDBHelper;
@@ -89,13 +90,7 @@ public class CatalogActivity extends AppCompatActivity
 		{
 			// Respond to a click on the "Insert dummy data" menu option
 			case R.id.action_insert_dummy_data:
-				ContentValues totoValues = new ContentValues();
-				totoValues.put(PetsEntry.COLUMN_PET_NAME, "Toto");
-				totoValues.put(PetsEntry.COLUMN_PET_BREED, "Terrier");
-				totoValues.put(PetsEntry.COLUMN_PET_GENDER, 1);
-				totoValues.put(PetsEntry.COLUMN_PET_WEIGHT, 7);
-				SQLiteDatabase shelterDBWriteable = mDbHelper.getWritableDatabase();
-				shelterDBWriteable.insert(PetsEntry.TABLE_NAME, null, totoValues);
+				insertDummyData();
 				displayDatabaseInfo();
 				return true;
 			// Respond to a click on the "Delete all entries" menu option
@@ -104,5 +99,26 @@ public class CatalogActivity extends AppCompatActivity
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		displayDatabaseInfo();
+	}
+
+	/**
+	 * Helper method to insert dummy data in app
+	 */
+	private void insertDummyData()
+	{
+		ContentValues totoValues = new ContentValues();
+		totoValues.put(PetsEntry.COLUMN_PET_NAME, "Toto");
+		totoValues.put(PetsEntry.COLUMN_PET_BREED, "Terrier");
+		totoValues.put(PetsEntry.COLUMN_PET_GENDER, 1);
+		totoValues.put(PetsEntry.COLUMN_PET_WEIGHT, 7);
+		SQLiteDatabase shelterDBWriteable = mDbHelper.getWritableDatabase();
+		shelterDBWriteable.insert(PetsEntry.TABLE_NAME, null, totoValues);
 	}
 }

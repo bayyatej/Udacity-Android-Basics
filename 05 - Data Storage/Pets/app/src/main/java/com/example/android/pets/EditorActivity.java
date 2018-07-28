@@ -28,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.android.pets.data.PetContract.PetsEntry;
 import com.example.android.pets.data.PetDBHelper;
@@ -178,6 +179,17 @@ public class EditorActivity extends AppCompatActivity
 		petValues.put(PetsEntry.COLUMN_PET_GENDER, petGender);
 		petValues.put(PetsEntry.COLUMN_PET_WEIGHT, petWeight);
 
-		shelterDBWriteable.insert(PetsEntry.TABLE_NAME, null, petValues);
+		int mInsertResult = (int) shelterDBWriteable.insert(PetsEntry.TABLE_NAME, null, petValues);
+
+		String toastMessage;
+		if (mInsertResult == -1)
+		{
+			toastMessage = "Error with saving pet";
+		} else
+		{
+			toastMessage = "Pet saved with id: 1";
+		}
+		Toast toast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
+		toast.show();
 	}
 }

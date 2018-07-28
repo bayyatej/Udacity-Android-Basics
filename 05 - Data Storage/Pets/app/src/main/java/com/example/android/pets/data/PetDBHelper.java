@@ -6,12 +6,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.android.pets.data.PetContract.PetsEntry;
 
-public class PetDbHelper extends SQLiteOpenHelper
+public class PetDBHelper extends SQLiteOpenHelper
 {
 	private static final String DB_NAME = "shelter.db";
 	private static final int VERSION_NUMBER = 1;
 
-	public PetDbHelper(Context context)
+	public PetDBHelper(Context context)
 	{
 		super(context, DB_NAME, null, VERSION_NUMBER);
 	}

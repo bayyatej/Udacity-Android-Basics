@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.android.pets.data.PetContract.PetsEntry;
-import com.example.android.pets.data.PetDbHelper;
+import com.example.android.pets.data.PetDBHelper;
 
 /**
  * Displays list of pets that were entered and stored in the app.
@@ -49,7 +49,7 @@ public class CatalogActivity extends AppCompatActivity
 	{
 		// To access our database, we instantiate our subclass of SQLiteOpenHelper
 		// and pass the context, which is the current activity.
-		PetDbHelper mDbHelper = new PetDbHelper(this);
+		PetDBHelper mDbHelper = new PetDBHelper(this);
 
 		// Create and/or open a database to read from it
 		SQLiteDatabase db = mDbHelper.getReadableDatabase();

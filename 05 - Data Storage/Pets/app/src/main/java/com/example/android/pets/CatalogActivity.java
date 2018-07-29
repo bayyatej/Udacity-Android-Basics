@@ -29,7 +29,7 @@ public class CatalogActivity extends AppCompatActivity
 		setContentView(R.layout.activity_catalog);
 
 		// Setup FAB to open EditorActivity
-		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+		FloatingActionButton fab = findViewById(R.id.fab);
 		fab.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -57,13 +57,27 @@ public class CatalogActivity extends AppCompatActivity
 
 		// Perform this raw SQL query "SELECT * FROM pets"
 		// to get a Cursor that contains all rows from the pets table.
-		Cursor cursor = db.rawQuery("SELECT * FROM " + PetsEntry.TABLE_NAME, null);
+
+		Cursor cursor = db.query(PetsEntry.TABLE_NAME, null, null, null, null, null, null);
 		try
 		{
 			// Display the number of rows in the Cursor (which reflects the number of rows in the
 			// pets table in the database).
 			TextView displayView = findViewById(R.id.text_view_pet);
-			displayView.setText("Number of rows in pets database table: " + cursor.getCount());
+			String displayMsg = getString(R.string.num_pets) + cursor.getCount();
+			displayMsg += ("\n\n" + PetsEntry._ID + "-" + PetsEntry.COLUMN_PET_NAME + "-" + PetsEntry.COLUMN_PET_BREED + "-" + PetsEntry.COLUMN_PET_GENDER + "-" + PetsEntry.COLUMN_PET_WEIGHT);
+			for (int i = 0; i < cursor.getCount(); i++)
+			{
+				displayMsg += "\n\n";
+				cursor.moveToPosition(i);
+				displayMsg += cursor.getInt(0) + "-";
+				displayMsg += cursor.getString(1) + "-";
+				displayMsg += cursor.getString(2) + "-";
+				displayMsg += cursor.getInt(3) + "-";
+				displayMsg += cursor.getInt(4);
+			}
+			displayMsg.trim();
+			displayView.setText(displayMsg);
 		} finally
 		{
 			// Always close the cursor when you're done reading from it. This releases all its

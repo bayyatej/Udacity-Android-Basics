@@ -57,4 +57,5 @@
 
     <!-- Label for dropdown menu option if the pet is female [CHAR LIMIT=20] -->
     <string name="gender_female">Female</string>
+    <string name="num_pets">Number of rows in pets database table:</string>
 </resources>

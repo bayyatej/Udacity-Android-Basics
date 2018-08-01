@@ -12,15 +12,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.android.pets.data.PetContract.PetsEntry;
-import com.example.android.pets.data.PetDBHelper;
 
 /**
  * Displays list of pets that were entered and stored in the app.
  */
 public class CatalogActivity extends AppCompatActivity
 {
-	private PetDBHelper mDbHelper;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -38,7 +35,6 @@ public class CatalogActivity extends AppCompatActivity
 				startActivity(intent);
 			}
 		});
-		mDbHelper = new PetDBHelper(this);
 		displayDatabaseInfo();
 	}
 
@@ -65,25 +61,41 @@ public class CatalogActivity extends AppCompatActivity
 			// Display the number of rows in the Cursor (which reflects the number of rows in the
 			// pets table in the database).
 			TextView displayView = findViewById(R.id.text_view_pet);
-			String displayMsg = getString(R.string.num_pets) + cursor.getCount();
-			displayMsg += ("\n\n" + PetsEntry._ID + "-" + PetsEntry.COLUMN_PET_NAME + "-" + PetsEntry.COLUMN_PET_BREED + "-" + PetsEntry.COLUMN_PET_GENDER + "-" + PetsEntry.COLUMN_PET_WEIGHT);
-			for (int i = 0; i < cursor.getCount(); i++)
+			StringBuilder displayMsg = null;
+			if (cursor != null)
 			{
-				displayMsg += "\n\n";
-				cursor.moveToPosition(i);
-				displayMsg += cursor.getInt(0) + "-";
-				displayMsg += cursor.getString(1) + "-";
-				displayMsg += cursor.getString(2) + "-";
-				displayMsg += cursor.getInt(3) + "-";
-				displayMsg += cursor.getInt(4);
+				displayMsg = new StringBuilder(getString(R.string.num_pets) + cursor.getCount());
 			}
-			displayMsg.trim();
-			displayView.setText(displayMsg);
+			if (displayMsg != null)
+			{
+				displayMsg.append("\n\n" + PetsEntry._ID + "-" + PetsEntry.COLUMN_PET_NAME + "-" + PetsEntry.COLUMN_PET_BREED + "-" + PetsEntry.COLUMN_PET_GENDER + "-" + PetsEntry.COLUMN_PET_WEIGHT);
+			}
+			if (cursor != null)
+			{
+				for (int i = 0; i < cursor.getCount(); i++)
+				{
+					displayMsg.append("\n\n");
+					cursor.moveToPosition(i);
+					displayMsg.append(cursor.getInt(0)).append("-");
+					displayMsg.append(cursor.getString(1)).append("-");
+					displayMsg.append(cursor.getString(2)).append("-");
+					displayMsg.append(cursor.getInt(3)).append("-");
+					displayMsg.append(cursor.getInt(4));
+				}
+			}
+			if (displayMsg != null)
+			{
+				displayMsg = new StringBuilder(displayMsg.toString().trim());
+				displayView.setText(displayMsg.toString());
+			}
 		} finally
 		{
 			// Always close the cursor when you're done reading from it. This releases all its
 			// resources and makes it invalid.
-			cursor.close();
+			if (cursor != null)
+			{
+				cursor.close();
+			}
 		}
 	}
 

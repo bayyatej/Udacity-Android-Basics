@@ -11,7 +11,7 @@ public class PetDBHelper extends SQLiteOpenHelper
 	private static final String DB_NAME = "shelter.db";
 	private static final int VERSION_NUMBER = 1;
 
-	public PetDBHelper(Context context)
+	PetDBHelper(Context context)
 	{
 		super(context, DB_NAME, null, VERSION_NUMBER);
 	}

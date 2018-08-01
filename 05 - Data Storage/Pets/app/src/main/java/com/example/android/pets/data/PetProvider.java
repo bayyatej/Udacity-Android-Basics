@@ -7,6 +7,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import com.example.android.pets.data.PetContract.PetsEntry;
 
@@ -15,10 +16,6 @@ import com.example.android.pets.data.PetContract.PetsEntry;
  */
 public class PetProvider extends ContentProvider
 {
-	/**
-	 * Tag for the log messages
-	 */
-	public static final String LOG_TAG = PetProvider.class.getSimpleName();
 
 	/**
 	 * URI matcher code for the content URI for the pets table
@@ -69,7 +66,7 @@ public class PetProvider extends ContentProvider
 	 * Perform the query for the given URI. Use the given projection, selection, selection arguments, and sort order.
 	 */
 	@Override
-	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
+	public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs,
 						String sortOrder)
 	{
 		// Get readable database
@@ -115,7 +112,7 @@ public class PetProvider extends ContentProvider
 	 * Insert new data into the provider with the given ContentValues.
 	 */
 	@Override
-	public Uri insert(Uri uri, ContentValues contentValues)
+	public Uri insert(@NonNull Uri uri, ContentValues contentValues)
 	{
 		final int match = sUriMatcher.match(uri);
 		switch (match)
@@ -145,7 +142,7 @@ public class PetProvider extends ContentProvider
 	 * Updates the data at the given selection and selection arguments, with the new ContentValues.
 	 */
 	@Override
-	public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs)
+	public int update(@NonNull Uri uri, ContentValues contentValues, String selection, String[] selectionArgs)
 	{
 		return 0;
 	}
@@ -154,7 +151,7 @@ public class PetProvider extends ContentProvider
 	 * Delete the data at the given selection and selection arguments.
 	 */
 	@Override
-	public int delete(Uri uri, String selection, String[] selectionArgs)
+	public int delete(@NonNull Uri uri, String selection, String[] selectionArgs)
 	{
 		return 0;
 	}
@@ -163,7 +160,7 @@ public class PetProvider extends ContentProvider
 	 * Returns the MIME type of data for the content URI.
 	 */
 	@Override
-	public String getType(Uri uri)
+	public String getType(@NonNull Uri uri)
 	{
 		return null;
 	}

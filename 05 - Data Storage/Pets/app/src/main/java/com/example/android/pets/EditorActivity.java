@@ -31,7 +31,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.android.pets.data.PetContract.PetsEntry;
-import com.example.android.pets.data.PetDBHelper;
 
 /**
  * Allows user to create a new pet or edit an existing one.
@@ -165,8 +164,6 @@ public class EditorActivity extends AppCompatActivity
 	 */
 	private void savePet()
 	{
-		PetDBHelper petDBHelper = new PetDBHelper(this);
-
 		String petName = mNameEditText.getText().toString().trim();
 		String petBreed = mBreedEditText.getText().toString().trim();
 		int petGender = mGender;

@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.android.pets.data.PetContract.PetsEntry;
 
@@ -130,8 +131,15 @@ public class PetProvider extends ContentProvider
 	 */
 	private Uri insertPet(Uri uri, ContentValues values)
 	{
-		SQLiteDatabase shelterDBWriteable = mPetDBHelper.getWritableDatabase();
-		long id = shelterDBWriteable.insert(PetsEntry.TABLE_NAME, null, values);
+		try
+		{
+			validateInput(values);
+		} catch (IllegalArgumentException e)
+		{
+			Log.e("PetProvider Insert", e.getLocalizedMessage());
+		}
+		SQLiteDatabase shelterDBWritable = mPetDBHelper.getWritableDatabase();
+		long id = shelterDBWritable.insert(PetsEntry.TABLE_NAME, null, values);
 
 		// Once we know the ID of the new row in the table,
 		// return the new URI with the ID appended to the end of it
@@ -163,5 +171,26 @@ public class PetProvider extends ContentProvider
 	public String getType(@NonNull Uri uri)
 	{
 		return null;
+	}
+
+	/**
+	 * @param values: a ContentValues object
+	 */
+	private void validateInput(ContentValues values) throws IllegalArgumentException
+	{
+		if (values.getAsString(PetsEntry.COLUMN_PET_NAME) == null)
+		{
+			throw new IllegalArgumentException("Pet does not have a name");
+		}
+		Integer gender = values.getAsInteger(PetsEntry.COLUMN_PET_GENDER);
+		if (gender == null || gender != PetsEntry.GENDER_FEMALE && gender != PetsEntry.GENDER_MALE && gender != PetsEntry.GENDER_UNKNOWN)
+		{
+			throw new IllegalArgumentException("Pet does not have a valid gender");
+		}
+		Integer weight = values.getAsInteger(PetsEntry.COLUMN_PET_WEIGHT);
+		if (weight != null && weight < 0)
+		{
+			throw new IllegalArgumentException("Pet does not have a valid weight");
+		}
 	}
 }

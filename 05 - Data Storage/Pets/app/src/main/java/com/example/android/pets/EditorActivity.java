@@ -16,7 +16,7 @@
 package com.example.android.pets;
 
 import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -166,7 +166,6 @@ public class EditorActivity extends AppCompatActivity
 	private void savePet()
 	{
 		PetDBHelper petDBHelper = new PetDBHelper(this);
-		SQLiteDatabase shelterDBWriteable = petDBHelper.getWritableDatabase();
 
 		String petName = mNameEditText.getText().toString().trim();
 		String petBreed = mBreedEditText.getText().toString().trim();
@@ -179,10 +178,10 @@ public class EditorActivity extends AppCompatActivity
 		petValues.put(PetsEntry.COLUMN_PET_GENDER, petGender);
 		petValues.put(PetsEntry.COLUMN_PET_WEIGHT, petWeight);
 
-		int mInsertResult = (int) shelterDBWriteable.insert(PetsEntry.TABLE_NAME, null, petValues);
+		Uri mInsertResult = getContentResolver().insert(PetsEntry.CONTENT_URI, petValues);
 
 		String toastMessage;
-		if (mInsertResult == -1)
+		if (mInsertResult == null)
 		{
 			toastMessage = "Error with saving pet";
 		} else

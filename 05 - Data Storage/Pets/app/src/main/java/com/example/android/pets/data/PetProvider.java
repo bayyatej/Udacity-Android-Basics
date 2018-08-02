@@ -131,15 +131,22 @@ public class PetProvider extends ContentProvider
 	 */
 	private Uri insertPet(Uri uri, ContentValues values)
 	{
+		String logTag = "PetProvider Insert";
 		try
 		{
 			validateInput(values);
 		} catch (IllegalArgumentException e)
 		{
-			Log.e("PetProvider Insert", e.getLocalizedMessage());
+			Log.e(logTag, e.getLocalizedMessage());
 		}
+
 		SQLiteDatabase shelterDBWritable = mPetDBHelper.getWritableDatabase();
 		long id = shelterDBWritable.insert(PetsEntry.TABLE_NAME, null, values);
+
+		if (id == -1)
+		{
+			Log.e(logTag, "Insert failed");
+		}
 
 		// Once we know the ID of the new row in the table,
 		// return the new URI with the ID appended to the end of it
@@ -150,10 +157,53 @@ public class PetProvider extends ContentProvider
 	 * Updates the data at the given selection and selection arguments, with the new ContentValues.
 	 */
 	@Override
-	public int update(@NonNull Uri uri, ContentValues contentValues, String selection, String[] selectionArgs)
+	public int update(@NonNull Uri uri, ContentValues contentValues, String selection,
+					  String[] selectionArgs)
 	{
-		return 0;
+		validateInput(contentValues);
+
+		final int match = sUriMatcher.match(uri);
+		switch (match)
+		{
+			case PETS:
+				return updatePet(contentValues, selection, selectionArgs);
+			case PET_ID:
+				// For the PET_ID code, extract out the ID from the URI,
+				// so we know which row to update. Selection will be "_id=?" and selection
+				// arguments will be a String array containing the actual ID.
+				selection = PetsEntry._ID + "=?";
+				selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+				return updatePet(contentValues, selection, selectionArgs);
+			default:
+				throw new IllegalArgumentException("Update is not supported for " + uri);
+		}
 	}
+
+	/**
+	 * Update pets in the database with the given content values. Apply the changes to the rows
+	 * specified in the selection and selection arguments (which could be 0 or 1 or more pets).
+	 * Return the number of rows that were successfully updated.
+	 */
+	private int updatePet(ContentValues values, String selection, String[] selectionArgs)
+	{
+		String logTag = "PetProvider Update";
+		try
+		{
+			validateInput(values);
+		} catch (IllegalArgumentException e)
+		{
+			Log.e(logTag, e.getLocalizedMessage());
+		}
+
+		if (values.size() == 0)
+		{
+			return 0;
+		}
+
+		SQLiteDatabase writableShelterDB = mPetDBHelper.getWritableDatabase();
+		return writableShelterDB.update(PetsEntry.TABLE_NAME, values, selection, selectionArgs);
+	}
+
 
 	/**
 	 * Delete the data at the given selection and selection arguments.
@@ -178,6 +228,11 @@ public class PetProvider extends ContentProvider
 	 */
 	private void validateInput(ContentValues values) throws IllegalArgumentException
 	{
+		if (!values.containsKey(PetsEntry.COLUMN_PET_NAME) || !values.containsKey(PetsEntry.COLUMN_PET_GENDER) || !values.containsKey(PetsEntry.COLUMN_PET_WEIGHT))
+		{
+			throw new IllegalArgumentException("Malformed ContentValues");
+		}
+
 		if (values.getAsString(PetsEntry.COLUMN_PET_NAME) == null)
 		{
 			throw new IllegalArgumentException("Pet does not have a name");

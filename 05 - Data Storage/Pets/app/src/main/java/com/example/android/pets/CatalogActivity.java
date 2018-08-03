@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import com.example.android.pets.data.PetContract.PetsEntry;
 
@@ -18,6 +18,8 @@ import com.example.android.pets.data.PetContract.PetsEntry;
  */
 public class CatalogActivity extends AppCompatActivity
 {
+	private Cursor mCursor;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -53,50 +55,12 @@ public class CatalogActivity extends AppCompatActivity
 				PetsEntry.COLUMN_PET_GENDER,
 				PetsEntry.COLUMN_PET_WEIGHT
 		};
+		mCursor = getContentResolver().query(PetsEntry.CONTENT_URI, projection, null, null, null, null);
+		PetCursorAdapter petCursorAdapter = new PetCursorAdapter(this, mCursor, 0);
 
-		Cursor cursor = getContentResolver().query(PetsEntry.CONTENT_URI, projection, null, null, null, null);
-
-		try
-		{
-			// Display the number of rows in the Cursor (which reflects the number of rows in the
-			// pets table in the database).
-			TextView displayView = findViewById(R.id.text_view_pet);
-			StringBuilder displayMsg = null;
-			if (cursor != null)
-			{
-				displayMsg = new StringBuilder(getString(R.string.num_pets) + cursor.getCount());
-			}
-			if (displayMsg != null)
-			{
-				displayMsg.append("\n\n" + PetsEntry._ID + "-" + PetsEntry.COLUMN_PET_NAME + "-" + PetsEntry.COLUMN_PET_BREED + "-" + PetsEntry.COLUMN_PET_GENDER + "-" + PetsEntry.COLUMN_PET_WEIGHT);
-			}
-			if (cursor != null)
-			{
-				for (int i = 0; i < cursor.getCount(); i++)
-				{
-					displayMsg.append("\n\n");
-					cursor.moveToPosition(i);
-					displayMsg.append(cursor.getInt(0)).append("-");
-					displayMsg.append(cursor.getString(1)).append("-");
-					displayMsg.append(cursor.getString(2)).append("-");
-					displayMsg.append(cursor.getInt(3)).append("-");
-					displayMsg.append(cursor.getInt(4));
-				}
-			}
-			if (displayMsg != null)
-			{
-				displayMsg = new StringBuilder(displayMsg.toString().trim());
-				displayView.setText(displayMsg.toString());
-			}
-		} finally
-		{
-			// Always close the cursor when you're done reading from it. This releases all its
-			// resources and makes it invalid.
-			if (cursor != null)
-			{
-				cursor.close();
-			}
-		}
+		ListView petList = findViewById(R.id.pet_list);
+		petList.setEmptyView(findViewById(R.id.empty_view));
+		petList.setAdapter(petCursorAdapter);
 	}
 
 	@Override
@@ -121,7 +85,8 @@ public class CatalogActivity extends AppCompatActivity
 				return true;
 			// Respond to a click on the "Delete all entries" menu option
 			case R.id.action_delete_all_entries:
-				// Do nothing for now
+				getContentResolver().delete(PetsEntry.CONTENT_URI, null, null);
+				displayDatabaseInfo();
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -132,6 +97,13 @@ public class CatalogActivity extends AppCompatActivity
 	{
 		super.onStart();
 		displayDatabaseInfo();
+	}
+
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
+		mCursor.close();
 	}
 
 	/**

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/pet_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:textColor="#2B3D4D"
+        android:textSize="24sp"
+        tools:text="@tools:sample/cities" />
+
+    <TextView
+        android:id="@+id/pet_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#AEB6BD"
+        android:textSize="16sp"
+        tools:text="@tools:sample/date/hhmm" />
+</LinearLayout>

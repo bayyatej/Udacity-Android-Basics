@@ -76,6 +76,15 @@ public class EditorActivity extends AppCompatActivity
 		mWeightEditText = findViewById(R.id.edit_pet_weight);
 		mGenderSpinner = findViewById(R.id.spinner_gender);
 
+		if (getIntent().getData() == null)
+		{
+			this.setTitle(R.string.editor_activity_title_new_pet);
+		} else
+		{
+			this.setTitle(R.string.editor_activity_title_edit_pet);
+			// Todo add logic to populate fields with pet information
+		}
+
 		setupSpinner();
 	}
 

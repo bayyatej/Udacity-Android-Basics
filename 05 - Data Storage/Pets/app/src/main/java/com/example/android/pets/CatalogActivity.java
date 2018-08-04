@@ -6,12 +6,14 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.android.pets.data.PetContract.PetsEntry;
@@ -48,6 +50,18 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 		// Setup adapter and attach to list view
 		mCursorAdapter = new PetCursorAdapter(this, null, 0);
 		petList.setAdapter(mCursorAdapter);
+
+		// Add onClickListener
+		petList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+			{
+				Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
+				intent.setData(Uri.parse(PetsEntry.CONTENT_URI.toString() + "/" + String.valueOf(position)));
+				startActivity(intent);
+			}
+		});
 
 		getLoaderManager().initLoader(0, null, this);
 	}

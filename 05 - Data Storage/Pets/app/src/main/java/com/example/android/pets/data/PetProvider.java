@@ -106,6 +106,10 @@ public class PetProvider extends ContentProvider
 			default:
 				throw new IllegalArgumentException("Cannot query unknown URI " + uri);
 		}
+
+		// Set notification for cursor
+		cursor.setNotificationUri(getContext().getContentResolver(), uri);
+
 		return cursor;
 	}
 
@@ -115,7 +119,10 @@ public class PetProvider extends ContentProvider
 	@Override
 	public Uri insert(@NonNull Uri uri, ContentValues contentValues)
 	{
+		// Set notification
+		notifyChangeHelper(uri);
 		final int match = sUriMatcher.match(uri);
+
 		switch (match)
 		{
 			case PETS:
@@ -132,6 +139,8 @@ public class PetProvider extends ContentProvider
 	private Uri insertPet(Uri uri, ContentValues values)
 	{
 		String logTag = "PetProvider Insert";
+		SQLiteDatabase shelterDBWritable = mPetDBHelper.getWritableDatabase();
+
 		try
 		{
 			validateInput(values);
@@ -140,7 +149,6 @@ public class PetProvider extends ContentProvider
 			Log.e(logTag, e.getLocalizedMessage());
 		}
 
-		SQLiteDatabase shelterDBWritable = mPetDBHelper.getWritableDatabase();
 		long id = shelterDBWritable.insert(PetsEntry.TABLE_NAME, null, values);
 
 		if (id == -1)
@@ -161,6 +169,8 @@ public class PetProvider extends ContentProvider
 					  String[] selectionArgs)
 	{
 		validateInput(contentValues);
+		// Set notification
+		notifyChangeHelper(uri);
 
 		final int match = sUriMatcher.match(uri);
 		switch (match)
@@ -187,6 +197,8 @@ public class PetProvider extends ContentProvider
 	private int updatePet(ContentValues values, String selection, String[] selectionArgs)
 	{
 		String logTag = "PetProvider Update";
+		SQLiteDatabase writableShelterDB = mPetDBHelper.getWritableDatabase();
+
 		try
 		{
 			validateInput(values);
@@ -200,7 +212,6 @@ public class PetProvider extends ContentProvider
 			return 0;
 		}
 
-		SQLiteDatabase writableShelterDB = mPetDBHelper.getWritableDatabase();
 		return writableShelterDB.update(PetsEntry.TABLE_NAME, values, selection, selectionArgs);
 	}
 
@@ -211,6 +222,9 @@ public class PetProvider extends ContentProvider
 	@Override
 	public int delete(@NonNull Uri uri, String selection, String[] selectionArgs)
 	{
+		// Set notification
+		notifyChangeHelper(uri);
+
 		// Get writeable database
 		SQLiteDatabase database = mPetDBHelper.getWritableDatabase();
 
@@ -272,5 +286,13 @@ public class PetProvider extends ContentProvider
 		{
 			throw new IllegalArgumentException("Pet does not have a valid weight");
 		}
+	}
+
+	/**
+	 * @param uri: a URI to set notification for
+	 */
+	private void notifyChangeHelper(Uri uri)
+	{
+		getContext().getContentResolver().notifyChange(uri, null);
 	}
 }

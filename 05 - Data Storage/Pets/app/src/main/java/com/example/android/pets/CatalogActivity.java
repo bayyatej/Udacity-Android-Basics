@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CursorAdapter;
 import android.widget.ListView;
 
 import com.example.android.pets.data.PetContract.PetsEntry;
@@ -106,7 +105,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 	}
 
 	@Override
-	public Loader onCreateLoader(int id, Bundle args)
+	public CursorLoader onCreateLoader(int id, Bundle args)
 	{
 		String[] projection = {
 				PetsEntry._ID,

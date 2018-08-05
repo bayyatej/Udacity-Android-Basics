@@ -76,6 +76,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 		setContentView(R.layout.activity_editor);
 
 		mEditPetUri = getIntent().getData();
+		// Find all relevant views that we will need to read user input from
+		mNameEditText = findViewById(R.id.edit_pet_name);
+		mBreedEditText = findViewById(R.id.edit_pet_breed);
+		mWeightEditText = findViewById(R.id.edit_pet_weight);
+		mGenderSpinner = findViewById(R.id.spinner_gender);
+		setupSpinner();
 
 		if (mEditPetUri == null)
 		{
@@ -85,18 +91,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 			this.setTitle(R.string.editor_activity_title_edit_pet);
 			getLoaderManager().initLoader(0, null, this);
 		}
-
-		// Find all relevant views that we will need to read user input from
-		mNameEditText = findViewById(R.id.edit_pet_name);
-		mBreedEditText = findViewById(R.id.edit_pet_breed);
-		mWeightEditText = findViewById(R.id.edit_pet_weight);
-		mGenderSpinner = findViewById(R.id.spinner_gender);
-		setupSpinner();
-
-		mInitialPetName = mNameEditText.getText().toString().trim();
-		mInitialPetBreed = mBreedEditText.getText().toString().trim();
-		mInitialPetWeightString = mPetWeightString = mWeightEditText.getText().toString().trim();
-		mInitialGender = mGenderSpinner.getSelectedItemPosition();
 	}
 
 	/**
@@ -344,6 +338,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 		mBreedEditText.setText(data.getString(1));
 		mGenderSpinner.setSelection(data.getInt(2));
 		mWeightEditText.setText(data.getString(3));
+
+		mInitialPetName = mNameEditText.getText().toString().trim();
+		mInitialPetBreed = mBreedEditText.getText().toString().trim();
+		mInitialPetWeightString = mPetWeightString = mWeightEditText.getText().toString().trim();
+		mInitialGender = mGenderSpinner.getSelectedItemPosition();
 	}
 
 	@Override

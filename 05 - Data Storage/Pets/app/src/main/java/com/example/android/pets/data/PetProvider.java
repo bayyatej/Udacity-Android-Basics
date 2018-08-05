@@ -260,6 +260,7 @@ public class PetProvider extends ContentProvider
 					// Set notification
 					notifyChangeHelper(uri);
 				}
+				return numRowsDeleted;
 			default:
 				throw new IllegalArgumentException("Deletion is not supported for " + uri);
 		}

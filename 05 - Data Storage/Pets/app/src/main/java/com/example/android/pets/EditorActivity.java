@@ -86,6 +86,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 		if (mEditPetUri == null)
 		{
 			this.setTitle(R.string.editor_activity_title_new_pet);
+			invalidateOptionsMenu();
 		} else
 		{
 			this.setTitle(R.string.editor_activity_title_edit_pet);
@@ -162,7 +163,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 				return true;
 			// Respond to a click on the "Delete" menu option
 			case R.id.action_delete:
-				// Do nothing for now
+				showDeleteConfirmationDialog();
 				return true;
 			// Respond to a click on the "Up" arrow button in the app bar
 			case android.R.id.home:
@@ -193,6 +194,19 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu)
+	{
+		super.onPrepareOptionsMenu(menu);
+		// If this is a new pet, hide the "Delete" menu item.
+		if (mEditPetUri == null)
+		{
+			MenuItem menuItem = menu.findItem(R.id.action_delete);
+			menuItem.setVisible(false);
+		}
+		return true;
 	}
 
 	@Override
@@ -266,6 +280,64 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 		toast.show();
 	}
 
+	private void showDeleteConfirmationDialog()
+	{
+		// Create an AlertDialog.Builder and set the message, and click listeners
+		// for the postivie and negative buttons on the dialog.
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.delete_alert_msg);
+		builder.setPositiveButton(R.string.delete_alert_confirm, new DialogInterface.OnClickListener()
+		{
+			public void onClick(DialogInterface dialog, int id)
+			{
+				// User clicked the "Delete" button, so delete the pet.
+				deletePet();
+				finish();
+			}
+		});
+		builder.setNegativeButton(R.string.delete_dialog_no, new DialogInterface.OnClickListener()
+		{
+			public void onClick(DialogInterface dialog, int id)
+			{
+				// User clicked the "Cancel" button, so dismiss the dialog
+				// and continue editing the pet.
+				if (dialog != null)
+				{
+					dialog.dismiss();
+				}
+				finish();
+			}
+		});
+
+		// Create and show the AlertDialog
+		AlertDialog alertDialog = builder.create();
+		alertDialog.show();
+	}
+
+	/**
+	 * Helper method to delete pet if in editor mode
+	 */
+	private void deletePet()
+	{
+		String toastMessage;
+
+		if (mEditPetUri != null)
+		{
+			int deleteResult = getContentResolver().delete(mEditPetUri, null, null);
+
+			if (deleteResult > 0)
+			{
+				toastMessage = mInitialPetName + " deleted successfully";
+			} else
+			{
+				toastMessage = getString(R.string.delete_error_msg);
+			}
+
+			Toast toast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
+			toast.show();
+		}
+	}
+
 	/**
 	 * Helper method to determine whether editor is empty
 	 *
@@ -333,11 +405,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data)
 	{
-		data.moveToFirst();
-		mNameEditText.setText(data.getString(0));
-		mBreedEditText.setText(data.getString(1));
-		mGenderSpinner.setSelection(data.getInt(2));
-		mWeightEditText.setText(data.getString(3));
+		if (data.getCount() > 0)
+		{
+			data.moveToFirst();
+			mNameEditText.setText(data.getString(0));
+			mBreedEditText.setText(data.getString(1));
+			mGenderSpinner.setSelection(data.getInt(2));
+			mWeightEditText.setText(data.getString(3));
+		}
 
 		mInitialPetName = mNameEditText.getText().toString().trim();
 		mInitialPetBreed = mBreedEditText.getText().toString().trim();

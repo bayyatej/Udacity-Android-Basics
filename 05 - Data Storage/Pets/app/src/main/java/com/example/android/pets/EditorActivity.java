@@ -181,14 +181,22 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 		Uri mInsertResult = null;
 		String petName = mNameEditText.getText().toString().trim();
 		String petBreed = mBreedEditText.getText().toString().trim();
+		String petWeightString = mWeightEditText.getText().toString().trim();
 		int petGender = mGender;
-		int petWeight = Integer.valueOf(mWeightEditText.getText().toString().trim());
+		int petWeight = (TextUtils.isEmpty(petWeightString)) ? 0 : Integer.valueOf(petWeightString);
+
 		ContentValues petValues = new ContentValues();
 
-		petValues.put(PetsEntry.COLUMN_PET_NAME, petName);
-		petValues.put(PetsEntry.COLUMN_PET_BREED, petBreed);
-		petValues.put(PetsEntry.COLUMN_PET_GENDER, petGender);
-		petValues.put(PetsEntry.COLUMN_PET_WEIGHT, petWeight);
+		if (TextUtils.isEmpty(petName) && TextUtils.isEmpty(petBreed) && petGender == PetsEntry.GENDER_UNKNOWN)
+		{
+			return;
+		} else
+		{
+			petValues.put(PetsEntry.COLUMN_PET_NAME, petName);
+			petValues.put(PetsEntry.COLUMN_PET_BREED, petBreed);
+			petValues.put(PetsEntry.COLUMN_PET_GENDER, petGender);
+			petValues.put(PetsEntry.COLUMN_PET_WEIGHT, petWeight);
+		}
 
 		if (mEditPetUri == null)
 		{

@@ -1,9 +1,11 @@
 package com.example.android.pets;
 
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -87,7 +89,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 				return true;
 			// Respond to a click on the "Delete all entries" menu option
 			case R.id.action_delete_all_entries:
-				getContentResolver().delete(PetsEntry.CONTENT_URI, null, null);
+				showDeleteConfirmationDialog();
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -116,6 +118,43 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 		totoValues.put(PetsEntry.COLUMN_PET_GENDER, 1);
 		totoValues.put(PetsEntry.COLUMN_PET_WEIGHT, 7);
 		getContentResolver().insert(PetsEntry.CONTENT_URI, totoValues);
+	}
+
+	private void deletePets()
+	{
+		getContentResolver().delete(PetsEntry.CONTENT_URI, null, null);
+	}
+
+	private void showDeleteConfirmationDialog()
+	{
+		// Create an AlertDialog.Builder and set the message, and click listeners
+		// for the postivie and negative buttons on the dialog.
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.delete_all_pets_dialog_msg);
+		builder.setPositiveButton(R.string.delete_alert_confirm, new DialogInterface.OnClickListener()
+		{
+			public void onClick(DialogInterface dialog, int id)
+			{
+				// User clicked the "Delete" button, so delete the pet.
+				deletePets();
+			}
+		});
+		builder.setNegativeButton(R.string.delete_dialog_no, new DialogInterface.OnClickListener()
+		{
+			public void onClick(DialogInterface dialog, int id)
+			{
+				// User clicked the "Cancel" button, so dismiss the dialog
+				// and continue editing the pet.
+				if (dialog != null)
+				{
+					dialog.dismiss();
+				}
+			}
+		});
+
+		// Create and show the AlertDialog
+		AlertDialog alertDialog = builder.create();
+		alertDialog.show();
 	}
 
 	@Override

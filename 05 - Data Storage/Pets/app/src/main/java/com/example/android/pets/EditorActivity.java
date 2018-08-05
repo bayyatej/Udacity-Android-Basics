@@ -305,7 +305,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 				{
 					dialog.dismiss();
 				}
-				finish();
 			}
 		});
 

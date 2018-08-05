@@ -1,12 +1,12 @@
 package com.example.android.pets;
 
 import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -58,7 +58,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
 				Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
-				intent.setData(Uri.parse(PetsEntry.CONTENT_URI.toString() + "/" + String.valueOf(position)));
+				intent.setData(ContentUris.withAppendedId(PetsEntry.CONTENT_URI, id));
 				startActivity(intent);
 			}
 		});

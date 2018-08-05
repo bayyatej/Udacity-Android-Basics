@@ -128,7 +128,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 	private void showDeleteConfirmationDialog()
 	{
 		// Create an AlertDialog.Builder and set the message, and click listeners
-		// for the postivie and negative buttons on the dialog.
+		// for the positive and negative buttons on the dialog.
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(R.string.delete_all_pets_dialog_msg);
 		builder.setPositiveButton(R.string.delete_alert_confirm, new DialogInterface.OnClickListener()

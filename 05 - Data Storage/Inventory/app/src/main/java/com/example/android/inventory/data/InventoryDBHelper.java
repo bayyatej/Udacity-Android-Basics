@@ -11,7 +11,7 @@ public class InventoryDBHelper extends SQLiteOpenHelper
 	private static final String DB_NAME = "inventory.db";
 	private static final int VERSION_NUMBER = 1;
 
-	InventoryDBHelper(Context context)
+	public InventoryDBHelper(Context context)
 	{
 		super(context, DB_NAME, null, VERSION_NUMBER);
 	}

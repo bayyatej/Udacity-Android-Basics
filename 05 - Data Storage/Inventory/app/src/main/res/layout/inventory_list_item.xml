@@ -4,11 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        tools:src="@color/colorPrimary" />
+
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_toRightOf="@+id/image"
         android:textSize="24sp"
         tools:text="@tools:sample/cities" />
 
@@ -17,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/name"
-        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@+id/image"
         android:textSize="16sp"
         tools:text="@tools:sample/date/hhmm" />
 
@@ -26,6 +34,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_margin="8dp"
+        android:layout_centerInParent="true"
         tools:text="@string/app_name" />
+
+    <TextView
+        android:id="@+id/quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/sale_btn"
+        android:textSize="16dp"
+        tools:text="@tools:sample/cities" />
 </RelativeLayout>

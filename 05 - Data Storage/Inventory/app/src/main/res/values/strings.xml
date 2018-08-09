@@ -15,4 +15,5 @@
     <!--EditorActivity Menu Strings-->
     <string name="save_product">Save Product</string>
     <string name="delete_product">Delete Product</string>
+    <string name="product_image">product_image</string>
 </resources>

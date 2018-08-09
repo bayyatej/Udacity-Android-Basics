@@ -1,18 +1,21 @@
 package com.example.android.inventory;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import com.example.android.inventory.data.InventoryContract.InventoryEntry;
@@ -29,6 +32,17 @@ public class InventoryActivity extends AppCompatActivity implements LoaderManage
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_inventory);
 		mInventoryAdapter = new InventoryAdapter(this, null, 0);
+		FloatingActionButton fab = findViewById(R.id.fab);
+
+		fab.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				Intent intent = new Intent(getBaseContext(), EditorActivity.class);
+				startActivity(intent);
+			}
+		});
 
 		ListView inventoryList = findViewById(R.id.inventory_list);
 		inventoryList.setAdapter(mInventoryAdapter);

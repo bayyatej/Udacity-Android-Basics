@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".EditorActivity">
+    <item
+        android:id="@+id/save"
+        android:icon="@drawable/round_save_white_24"
+        android:title="@string/save_product"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/delete"
+        android:title="@string/delete_product"
+        app:showAsAction="never" />
 </menu>

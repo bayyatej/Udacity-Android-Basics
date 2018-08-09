@@ -28,10 +28,11 @@ public class InventoryActivity extends AppCompatActivity implements LoaderManage
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_inventory);
+		mInventoryAdapter = new InventoryAdapter(this, null, 0);
 
 		ListView inventoryList = findViewById(R.id.inventory_list);
-		mInventoryAdapter = new InventoryAdapter(this, null, 0);
 		inventoryList.setAdapter(mInventoryAdapter);
+		inventoryList.setEmptyView(findViewById(R.id.empty));
 
 		getSupportLoaderManager().initLoader(0, null, this);
 	}
@@ -54,6 +55,11 @@ public class InventoryActivity extends AppCompatActivity implements LoaderManage
 		getContentResolver().insert(InventoryEntry.CONTENT_URI, dummyValues);
 	}
 
+	private void deleteAllData()
+	{
+		getContentResolver().delete(InventoryEntry.CONTENT_URI, null, null);
+	}
+
 	/*
 		Option Menu Methods
 	 */
@@ -74,7 +80,7 @@ public class InventoryActivity extends AppCompatActivity implements LoaderManage
 				insertDummyData();
 				return true;
 			case R.id.delete_all_inventory:
-				//delete dummy data
+				deleteAllData();
 				return true;
 		}
 

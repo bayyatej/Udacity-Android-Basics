@@ -51,12 +51,13 @@ public class InventoryAdapter extends CursorAdapter
 		final int id = cursor.getInt(idIndex);
 		final int quantity = cursor.getInt(quantityIndex);
 		int price = cursor.getInt(priceIndex);
+		String qtyString = "Quantity: " + String.valueOf(quantity);
 		String saleString = "Buy @ $" + String.valueOf(price);
 
 		Glide.with(context).load(cursor.getInt(imageIndex)).into(inventoryImageView);
 		inventoryNameView.setText(cursor.getString(nameIndex));
 		inventoryDetailView.setText(cursor.getString(detailIndex));
-		inventoryQuantityView.setText(String.valueOf(quantity));
+		inventoryQuantityView.setText(qtyString);
 		inventorySaleBtn.setText(saleString);
 
 		inventorySaleBtn.setOnClickListener(new View.OnClickListener()

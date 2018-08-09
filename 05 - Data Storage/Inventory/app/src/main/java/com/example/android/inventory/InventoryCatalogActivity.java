@@ -24,7 +24,7 @@ import com.example.android.inventory.data.InventoryContract.InventoryEntry;
 
 import java.io.ByteArrayOutputStream;
 
-public class InventoryActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>
+public class InventoryCatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>
 {
 	private InventoryCursorAdapter mInventoryCursorAdapter;
 
@@ -32,7 +32,7 @@ public class InventoryActivity extends AppCompatActivity implements LoaderManage
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_inventory);
+		setContentView(R.layout.activity_inventory_catalog);
 		mInventoryCursorAdapter = new InventoryCursorAdapter(this, null, 0);
 		FloatingActionButton fab = findViewById(R.id.fab);
 
@@ -41,7 +41,7 @@ public class InventoryActivity extends AppCompatActivity implements LoaderManage
 			@Override
 			public void onClick(View v)
 			{
-				Intent intent = new Intent(InventoryActivity.this, EditorActivity.class);
+				Intent intent = new Intent(InventoryCatalogActivity.this, EditorActivity.class);
 				startActivity(intent);
 			}
 		});
@@ -54,7 +54,7 @@ public class InventoryActivity extends AppCompatActivity implements LoaderManage
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
-				Intent intent = new Intent(InventoryActivity.this, EditorActivity.class);
+				Intent intent = new Intent(InventoryCatalogActivity.this, EditorActivity.class);
 				intent.setData(ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, id));
 				startActivity(intent);
 			}

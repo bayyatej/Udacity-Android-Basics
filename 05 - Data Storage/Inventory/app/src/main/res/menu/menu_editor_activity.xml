@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".EditorActivity">
     <item
-        android:id="@+id/save"
+        android:id="@+id/save_product"
         android:icon="@drawable/round_save_white_24"
         android:title="@string/save_product"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/delete"
+        android:id="@+id/delete_product"
         android:title="@string/delete_product"
         app:showAsAction="never" />
 </menu>

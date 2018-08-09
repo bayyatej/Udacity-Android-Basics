@@ -1,5 +1,6 @@
 package com.example.android.inventory;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.android.inventory.data.InventoryContract.InventoryEntry;
@@ -24,14 +26,14 @@ import java.io.ByteArrayOutputStream;
 
 public class InventoryActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>
 {
-	private InventoryAdapter mInventoryAdapter;
+	private InventoryCursorAdapter mInventoryCursorAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_inventory);
-		mInventoryAdapter = new InventoryAdapter(this, null, 0);
+		mInventoryCursorAdapter = new InventoryCursorAdapter(this, null, 0);
 		FloatingActionButton fab = findViewById(R.id.fab);
 
 		fab.setOnClickListener(new View.OnClickListener()
@@ -39,14 +41,24 @@ public class InventoryActivity extends AppCompatActivity implements LoaderManage
 			@Override
 			public void onClick(View v)
 			{
-				Intent intent = new Intent(getBaseContext(), EditorActivity.class);
+				Intent intent = new Intent(InventoryActivity.this, EditorActivity.class);
 				startActivity(intent);
 			}
 		});
 
 		ListView inventoryList = findViewById(R.id.inventory_list);
-		inventoryList.setAdapter(mInventoryAdapter);
+		inventoryList.setAdapter(mInventoryCursorAdapter);
 		inventoryList.setEmptyView(findViewById(R.id.empty));
+		inventoryList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+			{
+				Intent intent = new Intent(InventoryActivity.this, EditorActivity.class);
+				intent.setData(ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, id));
+				startActivity(intent);
+			}
+		});
 
 		getSupportLoaderManager().initLoader(0, null, this);
 	}
@@ -114,12 +126,12 @@ public class InventoryActivity extends AppCompatActivity implements LoaderManage
 	@Override
 	public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data)
 	{
-		mInventoryAdapter.swapCursor(data);
+		mInventoryCursorAdapter.swapCursor(data);
 	}
 
 	@Override
 	public void onLoaderReset(@NonNull Loader<Cursor> loader)
 	{
-		mInventoryAdapter.swapCursor(null);
+		mInventoryCursorAdapter.swapCursor(null);
 	}
 }

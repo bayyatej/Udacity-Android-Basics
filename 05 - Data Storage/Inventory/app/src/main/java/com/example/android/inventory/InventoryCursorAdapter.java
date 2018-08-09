@@ -16,11 +16,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.android.inventory.data.InventoryContract.InventoryEntry;
 
-public class InventoryAdapter extends CursorAdapter
+public class InventoryCursorAdapter extends CursorAdapter
 {
 	private Context mContext;
 
-	public InventoryAdapter(Context context, Cursor c, int flags)
+	InventoryCursorAdapter(Context context, Cursor c, int flags)
 	{
 		super(context, c, flags);
 		mContext = context;
@@ -54,7 +54,7 @@ public class InventoryAdapter extends CursorAdapter
 		String qtyString = "Quantity: " + String.valueOf(quantity);
 		String saleString = "Buy @ $" + String.valueOf(price);
 
-		Glide.with(context).load(cursor.getInt(imageIndex)).into(inventoryImageView);
+		Glide.with(context).load(cursor.getBlob(imageIndex)).into(inventoryImageView);
 		inventoryNameView.setText(cursor.getString(nameIndex));
 		inventoryDetailView.setText(cursor.getString(detailIndex));
 		inventoryQuantityView.setText(qtyString);

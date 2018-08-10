@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
@@ -27,7 +26,7 @@ public class InventoryCursorAdapter extends CursorAdapter
 	{
 		super(context, c, flags);
 		mContext = context;
-		mCoordinator = ((View) ((Activity) context).getWindow().getDecorView()).findViewById(R.id.parent);
+		mCoordinator = ((Activity) context).getWindow().getDecorView().findViewById(R.id.parent);
 	}
 
 	@Override
@@ -37,7 +36,7 @@ public class InventoryCursorAdapter extends CursorAdapter
 	}
 
 	@Override
-	public void bindView(View view, Context context, final Cursor cursor)
+	public void bindView(View view, Context context, Cursor cursor)
 	{
 		ImageView inventoryImageView = view.findViewById(R.id.image);
 		TextView inventoryNameView = view.findViewById(R.id.name);
@@ -53,14 +52,19 @@ public class InventoryCursorAdapter extends CursorAdapter
 		int priceIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_PRICE);
 
 		final int id = cursor.getInt(idIndex);
+		final String name = cursor.getString(nameIndex);
+		final String details = cursor.getString(detailIndex);
+		final int price = cursor.getInt(priceIndex);
 		final int quantity = cursor.getInt(quantityIndex);
-		int price = cursor.getInt(priceIndex);
+		final byte[] image = cursor.getBlob(imageIndex);
+
+
 		String qtyString = "Quantity: " + String.valueOf(quantity);
 		String saleString = "Buy @ $" + String.valueOf(price);
 
-		Glide.with(context).load(cursor.getBlob(imageIndex)).into(inventoryImageView);
-		inventoryNameView.setText(cursor.getString(nameIndex));
-		inventoryDetailView.setText(cursor.getString(detailIndex));
+		Glide.with(context).load(image).into(inventoryImageView);
+		inventoryNameView.setText(name);
+		inventoryDetailView.setText(details);
 		inventoryQuantityView.setText(qtyString);
 		inventorySaleBtn.setText(saleString);
 
@@ -72,17 +76,20 @@ public class InventoryCursorAdapter extends CursorAdapter
 				if (quantity > 0)
 				{
 					int newQuantity = quantity - 1;
-
-					ContentValues contentValues = new ContentValues();
-					DatabaseUtils.cursorRowToContentValues(cursor, contentValues);
-					contentValues.remove(InventoryEntry.COLUMN_PRODUCT_QUANTITY);
-					contentValues.put(InventoryEntry.COLUMN_PRODUCT_QUANTITY, newQuantity);
 					Uri uri = Uri.withAppendedPath(InventoryEntry.CONTENT_URI, String.valueOf(id));
+					ContentValues contentValues = new ContentValues();
+
+					contentValues.put(InventoryEntry.COLUMN_PRODUCT_NAME, name);
+					contentValues.put(InventoryEntry.COLUMN_PRODUCT_DESCRIPTION, details);
+					contentValues.put(InventoryEntry.COLUMN_PRODUCT_PRICE, price);
+					contentValues.put(InventoryEntry.COLUMN_PRODUCT_QUANTITY, newQuantity);
+					contentValues.put(InventoryEntry.COLUMN_PRODUCT_PICTURE, image);
+
 					mContext.getContentResolver().update(uri, contentValues, null, null);
 					notifyDataSetChanged();
 				} else
 				{
-					Snackbar.make(mCoordinator, "We are out of the item you tried to buy", Snackbar.LENGTH_LONG);
+					Snackbar.make(mCoordinator, "We are out of the item you tried to buy", Snackbar.LENGTH_LONG).show();
 					//todo snackbar not showing
 				}
 			}

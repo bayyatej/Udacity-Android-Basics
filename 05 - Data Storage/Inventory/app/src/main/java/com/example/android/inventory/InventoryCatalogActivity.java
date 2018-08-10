@@ -64,8 +64,9 @@ public class InventoryCatalogActivity extends AppCompatActivity implements Loade
 	}
 
 	/*
-		Inventory Methods
+		Helper Methods
 	 */
+
 	private void insertDummyData()
 	{
 		ContentValues dummyValues = new ContentValues();

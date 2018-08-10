@@ -1,5 +1,6 @@
 package com.example.android.inventory;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -20,11 +21,13 @@ import com.example.android.inventory.data.InventoryContract.InventoryEntry;
 public class InventoryCursorAdapter extends CursorAdapter
 {
 	private Context mContext;
+	private View mCoordinator;
 
 	InventoryCursorAdapter(Context context, Cursor c, int flags)
 	{
 		super(context, c, flags);
 		mContext = context;
+		mCoordinator = ((View) ((Activity) context).getWindow().getDecorView()).findViewById(R.id.parent);
 	}
 
 	@Override
@@ -79,7 +82,7 @@ public class InventoryCursorAdapter extends CursorAdapter
 					notifyDataSetChanged();
 				} else
 				{
-					Snackbar.make(v, "We are out of the item you tried to buy", Snackbar.LENGTH_LONG);
+					Snackbar.make(mCoordinator, "We are out of the item you tried to buy", Snackbar.LENGTH_LONG);
 					//todo snackbar not showing
 				}
 			}

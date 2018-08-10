@@ -54,6 +54,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 			mAddPhotoButton;
 	private ImageView mImageView;
 
+	private final int RESULT_TAKE_PICTURE = 1;
+	private final int RESULT_PICK_PICTURE = 2;
+
 	class InventoryTextWatcher implements TextWatcher
 	{
 		String initialString;
@@ -129,7 +132,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 				Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 				if (takePictureIntent.resolveActivity(getPackageManager()) != null)
 				{
-					startActivityForResult(takePictureIntent, 1);
+					startActivityForResult(takePictureIntent, RESULT_TAKE_PICTURE);
 				}
 			}
 		});
@@ -138,7 +141,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 			@Override
 			public void onClick(View v)
 			{
-				//todo add photo
+				Intent choosePictureIntent = new Intent(Intent.ACTION_PICK);
+				choosePictureIntent.setType("image/*");
+				startActivityForResult(Intent.createChooser(choosePictureIntent, "Select a picture"), RESULT_PICK_PICTURE);
 			}
 		});
 		if (mCurrentUri == null)
@@ -241,8 +246,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage("Are you sure you want to go back without saving your changes?");
-		builder.setNegativeButton("Yes", discardChangesListener);
-		builder.setPositiveButton("No", new DialogInterface.OnClickListener()
+		builder.setPositiveButton("Yes", discardChangesListener);
+		builder.setNegativeButton("No", new DialogInterface.OnClickListener()
 		{
 			@Override
 			public void onClick(DialogInterface dialog, int which)
@@ -253,7 +258,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 				}
 			}
 		});
-		builder.create();
+		AlertDialog alertDialog = builder.create();
+		alertDialog.show();
 	}
 
 	private void displayDeleteProductDialog()
@@ -280,7 +286,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 				}
 			}
 		});
-		builder.create();
+		AlertDialog alertDialog = builder.create();
+		alertDialog.show();
 	}
 
 	/*
@@ -306,11 +313,18 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 				}
 				return true;
 			case R.id.delete_product:
-				displayDeleteProductDialog(); //todo fix dialog not showing
+				displayDeleteProductDialog();
 				return true;
 			case android.R.id.home:
-				//todo confirm unsaved changes
-				NavUtils.navigateUpFromSameTask(this);
+				DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+						NavUtils.navigateUpFromSameTask(EditorActivity.this);
+					}
+				};
+				displayDialogOnUnsavedChanges(onClickListener);
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -330,7 +344,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 					finish();
 				}
 			};
-			displayDialogOnUnsavedChanges(discardChangesListener); //todo fix dialog not showing
+			displayDialogOnUnsavedChanges(discardChangesListener);
 		} else
 		{
 			super.onBackPressed();
@@ -343,11 +357,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		if (requestCode == 1 && resultCode == RESULT_OK)
+		if (requestCode == RESULT_TAKE_PICTURE && resultCode == RESULT_OK)
 		{
 			Bundle extras = data.getExtras();
 			Bitmap imageBitmap = (Bitmap) extras.get("data");
-			mImageView.setImageBitmap(imageBitmap);
+			/*mImageView.setImageBitmap(imageBitmap);*/
+			Glide.with(this).load(imageBitmap).into(mImageView);
+		} else if (requestCode == RESULT_PICK_PICTURE && resultCode == RESULT_OK)
+		{
+			Glide.with(this).load(data.getData()).into(mImageView);
 		}
 	}
 

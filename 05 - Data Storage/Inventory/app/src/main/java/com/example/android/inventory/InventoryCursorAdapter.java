@@ -90,7 +90,6 @@ public class InventoryCursorAdapter extends CursorAdapter
 				} else
 				{
 					Snackbar.make(mCoordinator, "We are out of the item you tried to buy", Snackbar.LENGTH_LONG).show();
-					//todo snackbar not showing
 				}
 			}
 		});

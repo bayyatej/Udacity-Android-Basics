@@ -154,7 +154,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 	 */
 	private boolean saveProduct()
 	{
-		Snackbar snackbar;
 		ContentValues contentValues = new ContentValues();
 		String name = mNameEditText.getText().toString().trim();
 		String description = mDescriptionEditText.getText().toString().trim();

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,7 @@ public class InventoryCursorAdapter extends CursorAdapter
 					int newQuantity = quantity - 1;
 
 					ContentValues contentValues = new ContentValues();
+					cursor.moveToFirst();
 					DatabaseUtils.cursorRowToContentValues(cursor, contentValues);
 					contentValues.remove(InventoryEntry.COLUMN_PRODUCT_QUANTITY);
 					contentValues.put(InventoryEntry.COLUMN_PRODUCT_QUANTITY, newQuantity);
@@ -77,6 +79,10 @@ public class InventoryCursorAdapter extends CursorAdapter
 					mContext.getContentResolver().update(Uri.withAppendedPath(InventoryEntry.CONTENT_URI, String.valueOf(id)), contentValues, null, null);
 					changeCursor(cursor);
 					notifyDataSetChanged();
+				} else
+				{
+					Snackbar.make(v.getRootView(), "We are out of the item you tried to buy", Snackbar.LENGTH_LONG);
+					//todo snackbar not showing
 				}
 			}
 		});

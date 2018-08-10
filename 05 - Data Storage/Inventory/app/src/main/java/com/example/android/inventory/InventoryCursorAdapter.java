@@ -71,17 +71,15 @@ public class InventoryCursorAdapter extends CursorAdapter
 					int newQuantity = quantity - 1;
 
 					ContentValues contentValues = new ContentValues();
-					cursor.moveToFirst();
 					DatabaseUtils.cursorRowToContentValues(cursor, contentValues);
 					contentValues.remove(InventoryEntry.COLUMN_PRODUCT_QUANTITY);
 					contentValues.put(InventoryEntry.COLUMN_PRODUCT_QUANTITY, newQuantity);
-
-					mContext.getContentResolver().update(Uri.withAppendedPath(InventoryEntry.CONTENT_URI, String.valueOf(id)), contentValues, null, null);
-					changeCursor(cursor);
+					Uri uri = Uri.withAppendedPath(InventoryEntry.CONTENT_URI, String.valueOf(id));
+					mContext.getContentResolver().update(uri, contentValues, null, null);
 					notifyDataSetChanged();
 				} else
 				{
-					Snackbar.make(v.getRootView(), "We are out of the item you tried to buy", Snackbar.LENGTH_LONG);
+					Snackbar.make(v, "We are out of the item you tried to buy", Snackbar.LENGTH_LONG);
 					//todo snackbar not showing
 				}
 			}

@@ -1,8 +1,10 @@
 package com.example.android.inventory;
 
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -128,7 +130,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 				if (takePictureIntent.resolveActivity(getPackageManager()) != null)
 				{
 					startActivityForResult(takePictureIntent, 1);
-					//todo have camera close after taking picture
 				}
 			}
 		});
@@ -228,6 +229,60 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 		return false;
 	}
 
+	private void deleteProduct()
+	{
+		if (mCurrentUri != null)
+		{
+			getContentResolver().delete(mCurrentUri, null, null);
+		}
+	}
+
+	private void displayDialogOnUnsavedChanges(DialogInterface.OnClickListener discardChangesListener)
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Are you sure you want to go back without saving your changes?");
+		builder.setNegativeButton("Yes", discardChangesListener);
+		builder.setPositiveButton("No", new DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which)
+			{
+				if (dialog != null)
+				{
+					dialog.dismiss();
+				}
+			}
+		});
+		builder.create();
+	}
+
+	private void displayDeleteProductDialog()
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Are you sure you want to delete this product?");
+		builder.setPositiveButton("Yes", new DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which)
+			{
+				deleteProduct();
+				finish();
+			}
+		});
+		builder.setNegativeButton("No", new DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which)
+			{
+				if (dialog != null)
+				{
+					dialog.dismiss();
+				}
+			}
+		});
+		builder.create();
+	}
+
 	/*
 		Option Menu Methods
 	 */
@@ -251,7 +306,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 				}
 				return true;
 			case R.id.delete_product:
-				//todo delete product
+				displayDeleteProductDialog(); //todo fix dialog not showing
 				return true;
 			case android.R.id.home:
 				//todo confirm unsaved changes
@@ -267,8 +322,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 	{
 		if (mUnsavedChangesPresent)
 		{
-			//todo display alert dialog confirming onBackPressed
-			//todo fix bug where mUnsavedChanges is true when no unsaved changes present
+			DialogInterface.OnClickListener discardChangesListener = new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					finish();
+				}
+			};
+			displayDialogOnUnsavedChanges(discardChangesListener); //todo fix dialog not showing
 		} else
 		{
 			super.onBackPressed();

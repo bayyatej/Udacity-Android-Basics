@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -50,8 +51,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 			mDescriptionEditText,
 			mPriceEditText,
 			mQuantityEditText;
-	private ImageButton mTakePictureButton,
-			mAddPhotoButton;
 	private ImageView mImageView;
 
 	private final int RESULT_TAKE_PICTURE = 1;
@@ -91,7 +90,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_editor);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		ActionBar actionBar = getSupportActionBar();
+		if (actionBar != null)
+		{
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
 		try
 		{
 			mCurrentUri = getIntent().getData();
@@ -117,8 +120,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 		mDescriptionEditText = findViewById(R.id.description_edit_text);
 		mPriceEditText = findViewById(R.id.price_edit_text);
 		mQuantityEditText = findViewById(R.id.quantity_edit_text);
-		mTakePictureButton = findViewById(R.id.add_photo_camera);
-		mAddPhotoButton = findViewById(R.id.add_photo);
+		ImageButton mTakePictureButton = findViewById(R.id.add_photo_camera);
+		ImageButton mAddPhotoButton = findViewById(R.id.add_photo);
 		mImageView = findViewById(R.id.product_image);
 
 		/*
@@ -164,9 +167,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 		String name = mNameEditText.getText().toString().trim();
 		String description = mDescriptionEditText.getText().toString().trim();
 		String priceString = mPriceEditText.getText().toString().trim();
-		int price = 0;
+		int price;
 		String qtyString = mQuantityEditText.getText().toString().trim();
-		int qty = 0;
+		int qty;
 		Bitmap bitmap = ((BitmapDrawable) mImageView.getDrawable()).getBitmap();
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 		bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
@@ -360,7 +363,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 		if (requestCode == RESULT_TAKE_PICTURE && resultCode == RESULT_OK)
 		{
 			Bundle extras = data.getExtras();
-			Bitmap imageBitmap = (Bitmap) extras.get("data");
+			Bitmap imageBitmap = null;
+			if (extras != null)
+			{
+				imageBitmap = (Bitmap) extras.get("data");
+			}
 			/*mImageView.setImageBitmap(imageBitmap);*/
 			Glide.with(this).load(imageBitmap).into(mImageView);
 		} else if (requestCode == RESULT_PICK_PICTURE && resultCode == RESULT_OK)

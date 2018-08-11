@@ -16,4 +16,6 @@
     <string name="save_product">Save Product</string>
     <string name="delete_product">Delete Product</string>
     <string name="product_image">product_image</string>
+    <string name="increment_quantity">Increment Quantity</string>
+    <string name="decrement_quantity">Decrement Quantity</string>
 </resources>

@@ -77,6 +77,7 @@ public class InventoryCatalogActivity extends AppCompatActivity implements Loade
 
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 		Bitmap dummyPic = BitmapFactory.decodeResource(this.getResources(), R.drawable.option1);
+		dummyPic = Bitmap.createScaledBitmap(dummyPic, 100, 100, false);
 		dummyPic.compress(Bitmap.CompressFormat.JPEG, 50, stream);
 		dummyValues.put(InventoryEntry.COLUMN_PRODUCT_PICTURE, stream.toByteArray());
 		getContentResolver().insert(InventoryEntry.CONTENT_URI, dummyValues);

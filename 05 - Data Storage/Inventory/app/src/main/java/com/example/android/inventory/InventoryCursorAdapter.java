@@ -3,6 +3,7 @@ package com.example.android.inventory;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
@@ -89,7 +90,22 @@ public class InventoryCursorAdapter extends CursorAdapter
 					notifyDataSetChanged();
 				} else
 				{
-					Snackbar.make(mCoordinator, "We are out of the item you tried to buy", Snackbar.LENGTH_LONG).show();
+					Snackbar.make(mCoordinator, "We are out of the item you tried to buy", Snackbar.LENGTH_LONG).setAction("Order More", new View.OnClickListener()
+					{
+						@Override
+						public void onClick(View v)
+						{
+							Intent intent = new Intent(Intent.ACTION_SENDTO);
+							if (intent.resolveActivity(mContext.getPackageManager()) != null)
+							{
+								intent.putExtra(Intent.EXTRA_SUBJECT, "Order for " + name);
+								mContext.startActivity(Intent.createChooser(intent, "Send Email"));
+							} else
+							{
+								Snackbar.make(mCoordinator, "You do not have an app that supports email", Snackbar.LENGTH_LONG).show();
+							}
+						}
+					}).show();
 				}
 			}
 		});

@@ -3,6 +3,7 @@ package com.example.android.inventory;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -56,6 +57,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 	private final int RESULT_TAKE_PICTURE = 1;
 	private final int RESULT_PICK_PICTURE = 2;
 
+	private Context mContext;
+
 	class InventoryTextWatcher implements TextWatcher
 	{
 		String initialString;
@@ -90,6 +93,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_editor);
+		mContext = this;
 		ActionBar actionBar = getSupportActionBar();
 		if (actionBar != null)
 		{
@@ -116,18 +120,70 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 	 */
 	private void setupWidgets()
 	{
+		/*
+			Views
+		 */
 		mNameEditText = findViewById(R.id.name_edit_text);
 		mDescriptionEditText = findViewById(R.id.description_edit_text);
 		mPriceEditText = findViewById(R.id.price_edit_text);
 		mQuantityEditText = findViewById(R.id.quantity_edit_text);
-		ImageButton mTakePictureButton = findViewById(R.id.add_photo_camera);
-		ImageButton mAddPhotoButton = findViewById(R.id.add_photo);
+		ImageButton decrementQtyBtn = findViewById(R.id.decrement);
+		ImageButton incrementQtyBtn = findViewById(R.id.increment);
+		ImageButton takePictureButton = findViewById(R.id.add_photo_camera);
+		ImageButton addPhotoButton = findViewById(R.id.add_photo);
 		mImageView = findViewById(R.id.product_image);
+
+		if (mCurrentUri == null)
+		{
+			mQuantityEditText.setText("0");
+		}
 
 		/*
 			Set up listeners
 		 */
-		mTakePictureButton.setOnClickListener(new View.OnClickListener()
+		decrementQtyBtn.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				int qty = Integer.parseInt(mQuantityEditText.getText().toString());
+
+				if (qty > 0)
+				{
+					mQuantityEditText.setText(String.valueOf(qty - 1));
+				} else
+				{
+					Snackbar.make(findViewById(R.id.price_edit_text), InventoryEntry.COLUMN_PRODUCT_QUANTITY + " must be greater than 0", Snackbar.LENGTH_LONG).setAction("Order More", new View.OnClickListener()
+					{
+						@Override
+						public void onClick(View v)
+						{
+							Intent intent = new Intent(Intent.ACTION_SENDTO);
+							if (intent.resolveActivity(mContext.getPackageManager()) != null)
+							{
+								intent.putExtra(Intent.EXTRA_SUBJECT, "Order for " + mNameEditText.getText().toString());
+								mContext.startActivity(Intent.createChooser(intent, "Send Email"));
+							} else
+							{
+								Snackbar.make(findViewById(R.id.price_edit_text), "You do not have an app that supports email", Snackbar.LENGTH_LONG).show();
+							}
+						}
+					}).show();
+				}
+			}
+		});
+
+		incrementQtyBtn.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				int qty = Integer.parseInt(mQuantityEditText.getText().toString());
+				mQuantityEditText.setText(String.valueOf(qty + 1));
+			}
+		});
+
+		takePictureButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
@@ -139,7 +195,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 				}
 			}
 		});
-		mAddPhotoButton.setOnClickListener(new View.OnClickListener()
+		addPhotoButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
@@ -169,7 +225,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 		String priceString = mPriceEditText.getText().toString().trim();
 		int price;
 		String qtyString = mQuantityEditText.getText().toString().trim();
-		int qty;
+		int qty = Integer.parseInt(qtyString);
 		Bitmap bitmap = ((BitmapDrawable) mImageView.getDrawable()).getBitmap();
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 		bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
@@ -202,20 +258,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 			}
 			if (price <= 0)
 			{
-				Snackbar.make(findViewById(R.id.price_edit_text), priceString + " must be greater than 0", Snackbar.LENGTH_LONG);
-				return false;
-			}
-			try
-			{
-				qty = Integer.parseInt(qtyString);
-			} catch (NullPointerException e)
-			{
-				mQuantityEditText.setText("0");
-				qty = 0;
-			}
-			if (qty <= 0)
-			{
-				Snackbar.make(findViewById(R.id.price_edit_text), String.valueOf(qty) + " must be greater than 0", Snackbar.LENGTH_LONG);
+				Snackbar.make(findViewById(R.id.price_edit_text), priceString + " must be greater than 0", Snackbar.LENGTH_LONG).show();
 				return false;
 			}
 

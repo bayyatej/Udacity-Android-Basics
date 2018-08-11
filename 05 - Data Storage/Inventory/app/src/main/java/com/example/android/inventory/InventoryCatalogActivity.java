@@ -70,8 +70,8 @@ public class InventoryCatalogActivity extends AppCompatActivity implements Loade
 	private void insertDummyData()
 	{
 		ContentValues dummyValues = new ContentValues();
-		dummyValues.put(InventoryEntry.COLUMN_PRODUCT_NAME, "Meh");
-		dummyValues.put(InventoryEntry.COLUMN_PRODUCT_DESCRIPTION, "sexy mofo");
+		dummyValues.put(InventoryEntry.COLUMN_PRODUCT_NAME, "Record");
+		dummyValues.put(InventoryEntry.COLUMN_PRODUCT_DESCRIPTION, "Hottest Jazz Around");
 		dummyValues.put(InventoryEntry.COLUMN_PRODUCT_PRICE, Integer.MAX_VALUE);
 		dummyValues.put(InventoryEntry.COLUMN_PRODUCT_QUANTITY, 1);
 

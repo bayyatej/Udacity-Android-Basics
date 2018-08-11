@@ -222,26 +222,23 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 		int price;
 		String qtyString = mQuantityEditText.getText().toString().trim();
 		int qty = Integer.parseInt(qtyString);
-		Bitmap bitmap = ((BitmapDrawable) mImageView.getDrawable()).getBitmap();
-		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-		byte[] imageByteArr = byteArrayOutputStream.toByteArray();
+		BitmapDrawable bitmapDrawable = ((BitmapDrawable) mImageView.getDrawable());
 
 		if (TextUtils.isEmpty(name))
 		{
-			Snackbar.make(findViewById(R.id.name_edit_text), name + " is invalid", Snackbar.LENGTH_LONG);
+			Snackbar.make(findViewById(R.id.name_edit_text), InventoryEntry.COLUMN_PRODUCT_NAME + " is invalid", Snackbar.LENGTH_LONG).show();
 		} else if (TextUtils.isEmpty(description))
 		{
-			Snackbar.make(findViewById(R.id.description_edit_text), description + " is invalid", Snackbar.LENGTH_LONG);
+			Snackbar.make(findViewById(R.id.description_edit_text), InventoryEntry.COLUMN_PRODUCT_DESCRIPTION + " is invalid", Snackbar.LENGTH_LONG).show();
 		} else if (TextUtils.isEmpty(priceString))
 		{
-			Snackbar.make(findViewById(R.id.price_edit_text), priceString + " is invalid", Snackbar.LENGTH_LONG);
+			Snackbar.make(findViewById(R.id.price_edit_text), InventoryEntry.COLUMN_PRODUCT_PRICE + " is invalid", Snackbar.LENGTH_LONG).show();
 		} else if (TextUtils.isEmpty(priceString))
 		{
-			Snackbar.make(findViewById(R.id.quantity_edit_text), qtyString + " is invalid", Snackbar.LENGTH_LONG);
-		} else if (imageByteArr == null)
+			Snackbar.make(findViewById(R.id.quantity_edit_text), InventoryEntry.COLUMN_PRODUCT_QUANTITY + " is invalid", Snackbar.LENGTH_LONG).show();
+		} else if (bitmapDrawable == null)
 		{
-			Snackbar.make(findViewById(R.id.product_image), "No image provided", Snackbar.LENGTH_LONG);
+			Snackbar.make(findViewById(R.id.product_image), "No image provided", Snackbar.LENGTH_LONG).show();
 		} else
 		{
 			try
@@ -257,6 +254,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 				Snackbar.make(findViewById(R.id.price_edit_text), priceString + " must be greater than 0", Snackbar.LENGTH_LONG).show();
 				return false;
 			}
+			Bitmap bitmap = bitmapDrawable.getBitmap();
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+			byte[] imageByteArr = byteArrayOutputStream.toByteArray();
 
 			contentValues.put(InventoryEntry.COLUMN_PRODUCT_NAME, name);
 			contentValues.put(InventoryEntry.COLUMN_PRODUCT_DESCRIPTION, description);

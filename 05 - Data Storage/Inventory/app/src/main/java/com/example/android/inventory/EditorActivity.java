@@ -359,15 +359,21 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 				displayDeleteProductDialog();
 				return true;
 			case android.R.id.home:
-				DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener()
+				if (mUnsavedChangesPresent)
 				{
-					@Override
-					public void onClick(DialogInterface dialog, int which)
+					DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener()
 					{
-						NavUtils.navigateUpFromSameTask(EditorActivity.this);
-					}
-				};
-				displayDialogOnUnsavedChanges(onClickListener);
+						@Override
+						public void onClick(DialogInterface dialog, int which)
+						{
+							NavUtils.navigateUpFromSameTask(EditorActivity.this);
+						}
+					};
+					displayDialogOnUnsavedChanges(onClickListener);
+				} else
+				{
+					NavUtils.navigateUpFromSameTask(EditorActivity.this);
+				}
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -408,7 +414,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 			{
 				imageBitmap = (Bitmap) extras.get("data");
 			}
-			/*mImageView.setImageBitmap(imageBitmap);*/
 			Glide.with(this).load(imageBitmap).into(mImageView);
 		} else if (requestCode == RESULT_PICK_PICTURE && resultCode == RESULT_OK)
 		{

@@ -90,7 +90,7 @@ public class InventoryCursorAdapter extends CursorAdapter
 					notifyDataSetChanged();
 				} else
 				{
-					Snackbar.make(mCoordinator, "We are out of the item you tried to buy", Snackbar.LENGTH_LONG).setAction("Order More", new View.OnClickListener()
+					Snackbar.make(mCoordinator, "You are out of " + name, Snackbar.LENGTH_LONG).setAction("Order More", new View.OnClickListener()
 					{
 						@Override
 						public void onClick(View v)

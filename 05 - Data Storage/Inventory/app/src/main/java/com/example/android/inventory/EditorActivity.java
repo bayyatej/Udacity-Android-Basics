@@ -133,11 +133,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 		ImageButton addPhotoButton = findViewById(R.id.add_photo);
 		mImageView = findViewById(R.id.product_image);
 
-		if (mCurrentUri == null)
-		{
-			mQuantityEditText.setText("0");
-		}
-
 		/*
 			Set up listeners
 		 */
@@ -207,6 +202,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 		});
 		if (mCurrentUri == null)
 		{
+			mQuantityEditText.setText("0");
 			mNameEditText.addTextChangedListener(new InventoryTextWatcher());
 			mDescriptionEditText.addTextChangedListener(new InventoryTextWatcher());
 			mPriceEditText.addTextChangedListener(new InventoryTextWatcher());
